@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://oraasfdeyboc"]
+
+[sub_resource type="TileSet" id="TileSet_n2agi"]
+
+[node name="Board" type="TileMapLayer" unique_id=1662956602]
+tile_set = SubResource("TileSet_n2agi")
