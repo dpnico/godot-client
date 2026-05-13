@@ -7,6 +7,7 @@ using System;
 public partial class Board : Node2D
 {
 	[Export] private TileMapLayer _grid;
+	[Export] private TileMapLayer _ships;
 	[Export] private TileMapLayer _markers;
 	
 	// Called when the node enters the scene tree for the first time.
