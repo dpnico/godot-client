@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace GodotClient.Ingame;
+
 /// <summary>
 /// Represents a singlular player's board state and handles its logic.
 /// </summary>

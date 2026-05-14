@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace GodotClient.MainMenu;
+
 /// <summary>
 /// The main menu with Start, Settings, Help and Exit button. It is the first
 /// scene that gets loaded when the game is started.
