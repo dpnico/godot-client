@@ -16,7 +16,7 @@ public partial class PopUp : Control
     private PopUpType _type;
 
     public event Action<int> ButtonPressed;
-    
+
     /// <summary>
     /// Called when the node enters the scene tree for the first time.
     /// </summary>
@@ -27,7 +27,7 @@ public partial class PopUp : Control
             _buttons[i].Pressed += () => ButtonPressed?.Invoke(i);
         }
     }
-    
+
     /// <summary>
     /// Initializes the pop-up with header, content and button text based on
     /// the specified type.
@@ -82,7 +82,7 @@ public partial class PopUp : Control
             _buttons[i].Text = textList[i];
         }
     }
-    
+
     /// <summary>
     /// Shows or hides the pop-up and (de)activates its functionality.
     /// </summary>

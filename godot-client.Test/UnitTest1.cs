@@ -1,4 +1,6 @@
-﻿namespace godot_client.Tests;
+using NUnit.Framework;
+
+namespace godot_client.Tests;
 
 public class Tests
 {
