@@ -5,6 +5,7 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>godotclient</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GodotProjectGenerator>false</GodotProjectGenerator>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NUnit" Version="4.3.2" />
