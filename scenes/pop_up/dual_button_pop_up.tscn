@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dihjlmiechng8"]
 
-[ext_resource type="Script" uid="uid://cgsjbxfljp843" path="res://src/pop_up/DualButtonPopUp.cs" id="1_jae21"]
+[ext_resource type="Script" uid="uid://paq1xg14iup7" path="res://src/pop_up/PopUp.cs" id="1_jae21"]
 
-[node name="DualButtonPopUp" type="Control" unique_id=94932875 node_paths=PackedStringArray("_header", "_content", "_firstOptionButton", "_secondOptionButton")]
+[node name="DualButtonPopUp" type="Control" unique_id=94932875 node_paths=PackedStringArray("_header", "_content", "_buttons")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,8 +12,7 @@ grow_vertical = 2
 script = ExtResource("1_jae21")
 _header = NodePath("PanelContainer/MarginContainer/VBoxContainer/Header")
 _content = NodePath("PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/RichTextLabel")
-_firstOptionButton = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Button")
-_secondOptionButton = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Button2")
+_buttons = [NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Button"), NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Button2")]
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=803528123]
 layout_mode = 1

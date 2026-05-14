@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://c2fm4r2g613ca"]
 
-[ext_resource type="Script" uid="uid://btun6tppidtav" path="res://src/pop_up/SingleButtonPopUp.cs" id="1_8hnuo"]
+[ext_resource type="Script" uid="uid://paq1xg14iup7" path="res://src/pop_up/PopUp.cs" id="1_8hnuo"]
 
-[node name="SingleButtonPopUp" type="Control" unique_id=1045588123 node_paths=PackedStringArray("_header", "_content", "_button")]
+[node name="SingleButtonPopUp" type="Control" unique_id=1045588123 node_paths=PackedStringArray("_header", "_content", "_buttons")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,7 +12,7 @@ grow_vertical = 2
 script = ExtResource("1_8hnuo")
 _header = NodePath("PanelContainer/MarginContainer/VBoxContainer/Header")
 _content = NodePath("PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/RichTextLabel")
-_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/Button")
+_buttons = [NodePath("PanelContainer/MarginContainer/VBoxContainer/Button")]
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=806688205]
 layout_mode = 1
