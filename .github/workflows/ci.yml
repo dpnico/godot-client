@@ -22,7 +22,6 @@ jobs:
 
       - name: GdUnit Test
         run: |
-          rm -rf .godot/mono/temp
           export GODOT_BIN=$(which godot)
           chmod +x addons/gdUnit4/runtest.sh
           addons/gdUnit4/runtest.sh --godot_binary "$GODOT_BIN" --headless
