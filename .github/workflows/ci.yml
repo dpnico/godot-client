@@ -23,8 +23,5 @@ jobs:
       - name: NUnit Test
         run: dotnet test godot-client.Test/godot-client.Test.csproj
 
-      - name: Import Godot
-        run: godot --headless --path .
-        
       - name: GdUnit Test
         run: bash addons/gdUnit4/runtest.sh
