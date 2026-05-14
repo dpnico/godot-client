@@ -10,9 +10,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    container:
-      image: liphium/godot-mono:4.6.2
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
