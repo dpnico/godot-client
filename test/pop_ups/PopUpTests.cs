@@ -25,7 +25,7 @@ public class PopUpTests
     {
         _runner = ISceneRunner.Load("res://scenes/test/test.tscn");
         _scene = _runner.Scene();
-        
+
         _singleButtonPopUp = _singleButtonPopUpScene.Instantiate<PopUp>();
         _dualButtonPopUp = _dualButtonPopUpScene.Instantiate<PopUp>();
         _scene.AddChild(_singleButtonPopUp);
