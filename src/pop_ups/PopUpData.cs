@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 
-namespace GodotClient.PopUp;
+namespace GodotClient.PopUps;
 
 /// <summary>
 /// Stores the initialization data of a singular pop-up.

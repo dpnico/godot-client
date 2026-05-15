@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Godot;
 
-namespace GodotClient.PopUp;
+namespace GodotClient.PopUps;
 
 /// <summary>
 /// A generic pop-up.
