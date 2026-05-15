@@ -10,9 +10,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    container:
-      image: liphium/godot-mono:4.6.2
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,7 +23,7 @@ jobs:
         run: dotnet format godot-client.sln --verify-no-changes --verbosity diagnostic
         
       - name: Build Godot Project
-        run: dotnet build godot-client.csproj
+        run: dotnet build godot-client.sln
         
       - name: Import Resources
         run: godot --headless --editor --quit
