@@ -10,6 +10,9 @@ namespace GodotClient.Test.PopUps;
 [RequireGodotRuntime]
 public class PopUpTests
 {
+    private static readonly ISceneRunner Runner = ISceneRunner.Load("res://scenes/test/test.tscn");
+    private Node _scene = Runner.Scene();
+
     private static readonly string SingleButtonPopUpPath = "res://scenes/pop_ups/single_button_pop_up.tscn";
     private static readonly string DualButtonPopUpPath = "res://scenes/pop_ups/dual_button_pop_up.tscn";
     private readonly PackedScene _singleButtonPopUpScene = GD.Load<PackedScene>(SingleButtonPopUpPath);
@@ -22,6 +25,8 @@ public class PopUpTests
     {
         _singleButtonPopUp = _singleButtonPopUpScene.Instantiate<PopUp>();
         _dualButtonPopUp = _dualButtonPopUpScene.Instantiate<PopUp>();
+        _scene.AddChild(_singleButtonPopUp);
+        _scene.AddChild(_dualButtonPopUp);
     }
 
     [TestCase]
