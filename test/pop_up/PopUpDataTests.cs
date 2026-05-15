@@ -6,6 +6,7 @@ using static GdUnit4.Assertions;
 namespace GodotClient.Test.PopUp;
 
 [TestSuite]
+[RequireGodotRuntime]
 public class PopUpDataTests
 {
     [TestCase]
