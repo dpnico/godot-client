@@ -25,9 +25,6 @@ jobs:
       - name: Build Godot Project
         run: dotnet build godot-client.sln
         
-      - name: Import Resources
-        run: godot --headless --editor --quit
-        
       - name: Test
         uses: godot-gdunit-labs/gdUnit4-action@v1
         with:
