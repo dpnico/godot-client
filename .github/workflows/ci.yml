@@ -16,12 +16,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        
+      - name: Setup .NET
+          uses: actions/setup-dotnet@v4
+          with:
+            dotnet-version: '8.0.x'
 
       - name: Lint
         run: dotnet format godot-client.sln --verify-no-changes --verbosity diagnostic
         
       - name: Build Godot Project
         run: dotnet build godot-client.csproj
+        
+      - name: Import Resources
+        run: godot --headless --editor --quit
         
       - name: Test
         uses: godot-gdunit-labs/gdUnit4-action@v1
