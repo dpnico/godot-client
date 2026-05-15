@@ -19,7 +19,10 @@ jobs:
 
       - name: Lint
         run: dotnet format godot-client.sln --verify-no-changes --verbosity diagnostic
-      
+        
+      - name: Build Godot Project
+        run: dotnet build godot-client.csproj
+        
       - name: Test
         uses: godot-gdunit-labs/gdUnit4-action@v1
         with:
