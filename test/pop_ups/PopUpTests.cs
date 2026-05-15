@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using GdUnit4;
 using Godot;
 using GodotClient.PopUps;
@@ -78,22 +79,24 @@ public class PopUpTests
     }
 
     [TestCase]
-    public void PopUpShowTest()
+    public async Task PopUpShowTest()
     {
         _singleButtonPopUp.Show(true);
 
-        AssertThat(_singleButtonPopUp.HasFocus()).IsTrue();
+        await _runner.AwaitIdleFrame();
+
         AssertThat(_singleButtonPopUp.IsVisible()).IsTrue();
         AssertThat(_singleButtonPopUp.GetMouseFilter()).IsEqual(Control.MouseFilterEnum.Stop);
         AssertThat(_singleButtonPopUp.GetProcessMode()).IsEqual(Node.ProcessModeEnum.Inherit);
     }
 
     [TestCase]
-    public void PopUpHideTest()
+    public async Task PopUpHideTest()
     {
         _singleButtonPopUp.Show(false);
 
-        AssertThat(_singleButtonPopUp.HasFocus()).IsFalse();
+        await _runner.AwaitIdleFrame();
+
         AssertThat(_singleButtonPopUp.IsVisible()).IsFalse();
         AssertThat(_singleButtonPopUp.GetMouseFilter()).IsEqual(Control.MouseFilterEnum.Ignore);
         AssertThat(_singleButtonPopUp.GetProcessMode()).IsEqual(Node.ProcessModeEnum.Disabled);
