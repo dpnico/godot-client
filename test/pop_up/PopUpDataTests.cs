@@ -14,7 +14,7 @@ public class PopUpDataTests
     {
         var singleButtonPopUpScene = GD.Load<PackedScene>("res://scenes/pop_up/single_button_pop_up.tscn");
         var dualButtonPopUpScene = GD.Load<PackedScene>("res://scenes/pop_up/dual_button_pop_up.tscn");
-        
+
         var exitGame = PopUpMap.Scene[PopUpType.EXIT_GAME];
 
         AssertThat(exitGame).IsEquivalentTo(dualButtonPopUpScene);
