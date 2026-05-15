@@ -30,4 +30,4 @@ jobs:
         with:
           godot-version: '4.6.2'
           paths: 'res://test'
-          godot-dotnet: true
+          godot-net: true
