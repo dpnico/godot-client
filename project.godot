@@ -11,7 +11,8 @@ config_version=5
 [application]
 
 config/name="godot-client"
-config/features=PackedStringArray("4.6", "Forward Plus")
+run/main_scene="uid://wp4t0ta7ytq2"
+config/features=PackedStringArray("4.6", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [display]
@@ -23,6 +24,10 @@ window/stretch/mode="canvas_items"
 [dotnet]
 
 project/assembly_name="godot-client"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
 
 [physics]
 

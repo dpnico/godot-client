@@ -1,0 +1,40 @@
+name: CI/CD
+
+on:
+  push:
+  pull_request:
+    
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Lint
+        run: dotnet format godot-client.sln --verify-no-changes --verbosity diagnostic
+        
+      - name: Build Godot Project
+        run: dotnet build godot-client.sln
+        
+      - name: Test
+        uses: godot-gdunit-labs/gdUnit4-action@v1
+        env:
+          GODOT_BIN: /home/runner/godot-linux/godot
+        with:
+          godot-version: '4.6.2'
+          paths: 'res://test'
+          godot-net: true
