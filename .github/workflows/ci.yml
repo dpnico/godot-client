@@ -30,7 +30,6 @@ jobs:
       #     chmod +x addons/gdUnit4/runtest.sh
       #    addons/gdUnit4/runtest.sh --godot_binary "$GODOT_BIN" --headless
 
-      - uses: actions/checkout@v4
       - uses: godot-gdunit-labs/gdUnit4-action@v1
         with:
           godot-version: '4.6.2'
