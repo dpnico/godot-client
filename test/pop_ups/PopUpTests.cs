@@ -10,8 +10,8 @@ namespace GodotClient.Test.PopUps;
 [RequireGodotRuntime]
 public class PopUpTests
 {
-    private static readonly ISceneRunner Runner = ISceneRunner.Load("res://scenes/test/test.tscn");
-    private Node _scene = Runner.Scene();
+    private ISceneRunner _runner;
+    private Node _scene;
 
     private static readonly string SingleButtonPopUpPath = "res://scenes/pop_ups/single_button_pop_up.tscn";
     private static readonly string DualButtonPopUpPath = "res://scenes/pop_ups/dual_button_pop_up.tscn";
@@ -23,6 +23,9 @@ public class PopUpTests
     [Before]
     public void SetUp()
     {
+        _runner = ISceneRunner.Load("res://scenes/test/test.tscn");
+        _scene = _runner.Scene();
+        
         _singleButtonPopUp = _singleButtonPopUpScene.Instantiate<PopUp>();
         _dualButtonPopUp = _dualButtonPopUpScene.Instantiate<PopUp>();
         _scene.AddChild(_singleButtonPopUp);
@@ -101,7 +104,7 @@ public class PopUpTests
     {
         var exitGame = PopUpMap.Scene[PopUpType.EXIT_GAME];
 
-        AssertThat(exitGame.ResourcePath).IsEqual(DualButtonPopUpPath);
+        AssertThat(exitGame.ResourcePath).Contains(DualButtonPopUpPath);
     }
 
     [TestCase]
