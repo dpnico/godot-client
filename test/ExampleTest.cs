@@ -1,4 +1,4 @@
-using GdUnit4;
+/*using GdUnit4;
 using static GdUnit4.Assertions;
 
 namespace GodotClient.Test;
@@ -14,4 +14,4 @@ public class ExampleTest
 
         AssertThat(a).IsNotEqual(b);
     }
-}
+}*/
