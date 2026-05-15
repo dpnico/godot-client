@@ -33,7 +33,7 @@ jobs:
       - name: Test
         uses: godot-gdunit-labs/gdUnit4-action@v1
         env:
-          GODOT_BIN: /home/runner/godot-linux/godot
+          GODOT_BIN: /home/runner/work/godot-client/godot-client/
         with:
           godot-version: '4.6.2'
           paths: 'res://test'
