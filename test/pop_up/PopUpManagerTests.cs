@@ -6,6 +6,8 @@ using static GdUnit4.Assertions;
 
 namespace GodotClient.Test.PopUps;
 
+[TestSuite]
+[RequireGodotRuntime]
 public class PopUpManagerTests
 {
     private ISceneRunner _runner;
