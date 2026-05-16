@@ -11,7 +11,6 @@ namespace GodotClient.Test.PopUps;
 [RequireGodotRuntime]
 public class PopUpManagerTests
 {
-    private readonly SceneTree _tree = new();
     private ISceneRunner _runner;
     private Node _scene;
 
@@ -22,7 +21,6 @@ public class PopUpManagerTests
     {
         _runner = ISceneRunner.Load("res://scenes/test/test.tscn");
         _scene = _runner.Scene();
-        _tree.Root.AddChild(_scene);
 
         _manager = new PopUpManager(_scene);
     }
