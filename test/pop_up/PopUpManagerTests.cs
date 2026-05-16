@@ -32,7 +32,7 @@ public class PopUpManagerTests
         var stack = _manager.GetStack();
         var popUp = stack.Peek();
 
-        AssertThat(_scene.GetChildCount()).IsEqual(1);
+        AssertThat(_manager.GetRoot().GetChildCount()).IsEqual(1);
         AssertThat(stack.Count).IsEqual(1);
         AssertThat(popUp.GetPopUpType()).IsEqual(PopUpType.EXIT_GAME);
         AssertThat(popUp.GetHeader().Text).IsEqual("Exit Game");
@@ -46,7 +46,7 @@ public class PopUpManagerTests
         _manager.ShowPopUp(PopUpType.EXIT_GAME);
         _manager.RemovePopUp();
 
-        AssertThat(_scene.GetChildCount()).IsEqual(0);
+        AssertThat(_manager.GetRoot().GetChildCount()).IsEqual(0);
         AssertThat(_manager.GetStack().Count).IsEqual(0);
     }
 
@@ -61,9 +61,11 @@ public class PopUpManagerTests
     public void ClearStack()
     {
         _manager.ShowPopUp(PopUpType.EXIT_GAME);
+        _manager.ShowPopUp(PopUpType.EXIT_GAME);
+        _manager.ShowPopUp(PopUpType.EXIT_GAME);
         _manager.ClearStack();
 
-        AssertThat(_scene.GetChildCount()).IsEqual(0);
+        AssertThat(_manager.GetRoot().GetChildCount()).IsEqual(0);
         AssertThat(_manager.GetStack().Count).IsEqual(0);
     }
 

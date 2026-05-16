@@ -67,7 +67,7 @@ public class PopUpManager
         ShowMostRecent(true);
         PopUpRemoved?.Invoke(popUp.GetPopUpType());
         _root.RemoveChild(popUp);
-        popUp.Free();
+        popUp.QueueFree();
     }
 
     /// <summary>
@@ -88,5 +88,14 @@ public class PopUpManager
     public Stack<PopUp> GetStack()
     {
         return _popUpStack;
+    }
+
+    /// <summary>
+    /// Returns the pop-up root node.
+    /// </summary>
+    /// <returns></returns>
+    public Node GetRoot()
+    {
+        return _root;
     }
 }
