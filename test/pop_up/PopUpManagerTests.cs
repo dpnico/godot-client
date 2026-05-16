@@ -1,6 +1,5 @@
 using System;
 using GdUnit4;
-using Godot;
 using GodotClient.PopUps;
 using static GdUnit4.Assertions;
 

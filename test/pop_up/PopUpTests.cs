@@ -14,8 +14,8 @@ public class PopUpTests
     private ISceneRunner _runner;
     private Node _scene;
 
-    private static readonly string SingleButtonPopUpPath = "res://scenes/pop_ups/single_button_pop_up.tscn";
-    private static readonly string DualButtonPopUpPath = "res://scenes/pop_ups/dual_button_pop_up.tscn";
+    private static readonly string SingleButtonPopUpPath = "res://scenes/pop_up/single_button_pop_up.tscn";
+    private static readonly string DualButtonPopUpPath = "res://scenes/pop_up/dual_button_pop_up.tscn";
     private readonly PackedScene _singleButtonPopUpScene = GD.Load<PackedScene>(SingleButtonPopUpPath);
     private readonly PackedScene _dualButtonPopUpScene = GD.Load<PackedScene>(DualButtonPopUpPath);
     private PopUp _singleButtonPopUp;
