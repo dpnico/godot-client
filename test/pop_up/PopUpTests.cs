@@ -126,7 +126,5 @@ public class PopUpTests
     public void TearDown()
     {
         _scene.QueueFree();
-        _singleButtonPopUp.QueueFree();
-        _dualButtonPopUp.QueueFree();
     }
 }
