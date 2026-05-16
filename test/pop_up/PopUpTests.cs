@@ -91,7 +91,7 @@ public class PopUpTests
     public void Hide()
     {
         _singleButtonPopUp.Show(false);
-        
+
         AssertThat(_singleButtonPopUp.IsVisible()).IsFalse();
         AssertThat(_singleButtonPopUp.GetMouseFilter()).IsEqual(Control.MouseFilterEnum.Ignore);
         AssertThat(_singleButtonPopUp.GetProcessMode()).IsEqual(Node.ProcessModeEnum.Disabled);
