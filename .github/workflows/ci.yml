@@ -3,6 +3,9 @@ name: CI/CD
 on:
   push:
   pull_request:
+
+container:
+  image: liphium/godot-mono:4.6.2
     
 permissions:
   contents: read
@@ -27,11 +30,13 @@ jobs:
       - name: Lint
         run: dotnet format godot-client.sln --verify-no-changes --verbosity diagnostic
         
-      # - name: Build Godot Project
-      #   run: dotnet build godot-client.sln
-          
+      - name: Prepare Godot
+        run: godot --headless --import | godot --headless --build-solutions --quit
+
       - name: Test
         uses: godot-gdunit-labs/gdUnit4-action@v1
+        env:
+          GODOT_BIN: /godot/Godot
         with:
           godot-net: true
           godot-version: '4.6.2'
