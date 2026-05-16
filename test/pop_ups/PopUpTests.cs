@@ -85,6 +85,7 @@ public class PopUpTests
 
         await _runner.AwaitIdleFrame();
 
+        AssertThat(_singleButtonPopUp.HasFocus()).IsTrue();
         AssertThat(_singleButtonPopUp.IsVisible()).IsTrue();
         AssertThat(_singleButtonPopUp.GetMouseFilter()).IsEqual(Control.MouseFilterEnum.Stop);
         AssertThat(_singleButtonPopUp.GetProcessMode()).IsEqual(Node.ProcessModeEnum.Inherit);
@@ -97,6 +98,7 @@ public class PopUpTests
 
         await _runner.AwaitIdleFrame();
 
+        AssertThat(_singleButtonPopUp.HasFocus()).IsFalse();
         AssertThat(_singleButtonPopUp.IsVisible()).IsFalse();
         AssertThat(_singleButtonPopUp.GetMouseFilter()).IsEqual(Control.MouseFilterEnum.Ignore);
         AssertThat(_singleButtonPopUp.GetProcessMode()).IsEqual(Node.ProcessModeEnum.Disabled);
