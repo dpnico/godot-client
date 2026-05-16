@@ -72,6 +72,7 @@ public class PopUpManagerTests
     [After]
     public void TearDown()
     {
+        _scene.QueueFree();
         _manager = null;
         _runner.Dispose();
     }
