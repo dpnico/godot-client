@@ -125,9 +125,7 @@ public class PopUpTests
     [After]
     public void TearDown()
     {
-        _runner = null;
-        _scene = null;
-
+        _scene.QueueFree();
         _singleButtonPopUp.QueueFree();
         _dualButtonPopUp.QueueFree();
     }

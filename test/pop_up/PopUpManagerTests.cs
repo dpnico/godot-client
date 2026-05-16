@@ -10,17 +10,11 @@ namespace GodotClient.Test.PopUps;
 [RequireGodotRuntime]
 public class PopUpManagerTests
 {
-    private ISceneRunner _runner;
-    private Node _scene;
-
     private PopUpManager _manager;
 
     [Before]
     public void SetUp()
     {
-        _runner = ISceneRunner.Load("res://scenes/test/test.tscn");
-        _scene = _runner.Scene();
-
         _manager = new PopUpManager();
     }
 
