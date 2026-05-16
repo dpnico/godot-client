@@ -14,27 +14,24 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
-    
-    container:
-      image: liphium/godot-mono:4.6.2
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      # - name: Checkout
+      #   uses: actions/checkout@v4
         
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
+      # - name: Set up .NET
+      #   uses: actions/setup-dotnet@v4
+      #   with:
+      #     dotnet-version: '8.0.x'
 
       - name: Lint
         run: dotnet format godot-client.sln --verify-no-changes --verbosity diagnostic
         
       - name: Test
-        run: |
-          echo $PATH
-          which xvfb-run
-          godot --headless --import
-          godot --headless --build-solutions --quit
-          chmod +x addons/gdUnit4/runtest.sh
-          bash addons/gdUnit4/runtest.sh --godot_binary /godot/Godot
+      - uses: godot-gdunit-labs/gdUnit4-action@v1
+        with:
+          godot-version: '4.6.2'
+          roject_dir: './godot_client/'
+          paths: 'res://test'
+          godot-net: true
+          
