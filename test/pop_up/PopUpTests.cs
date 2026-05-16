@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NUnit.Framework;
 using GdUnit4;
 using Godot;
 using GodotClient.PopUps;
@@ -21,7 +22,7 @@ public class PopUpTests
     private PopUp _singleButtonPopUp;
     private PopUp _dualButtonPopUp;
 
-    [Before]
+    [SetUp]
     public void SetUp()
     {
         _scene = _testScene.Instantiate<TestScene>();
@@ -32,7 +33,7 @@ public class PopUpTests
         _scene.AddChild(_dualButtonPopUp);
     }
 
-    [TestCase]
+    [GdUnit4.TestCase]
     public void SetHeader()
     {
         _singleButtonPopUp.SetHeader("Test");
@@ -40,7 +41,7 @@ public class PopUpTests
         AssertThat(_singleButtonPopUp.GetHeader().Text).IsEqual("Test");
     }
 
-    [TestCase]
+    [GdUnit4.TestCase]
     public void SetContent()
     {
         _singleButtonPopUp.SetContent("This is a test");
@@ -48,7 +49,7 @@ public class PopUpTests
         AssertThat(_singleButtonPopUp.GetContent().Text).IsEqual("This is a test");
     }
 
-    [TestCase]
+    [GdUnit4.TestCase]
     public void SetButtonTextSingle()
     {
         _singleButtonPopUp.SetButtonText(new List<string>() { "Button 1" });
@@ -56,7 +57,7 @@ public class PopUpTests
         AssertThat(_singleButtonPopUp.GetButtons()[0].Text).IsEqual("Button 1");
     }
 
-    [TestCase]
+    [GdUnit4.TestCase]
     public void SetButtonTextDual()
     {
         _dualButtonPopUp.SetButtonText(new List<string>() { "Button 1", "Button 2" });
@@ -65,7 +66,7 @@ public class PopUpTests
         AssertThat(_dualButtonPopUp.GetButtons()[1].Text).IsEqual("Button 2");
     }
 
-    [TestCase]
+    [GdUnit4.TestCase]
     public void Init()
     {
         _dualButtonPopUp.Init(PopUpType.EXIT_GAME);
@@ -77,7 +78,7 @@ public class PopUpTests
         AssertThat(_dualButtonPopUp.GetButtons()[1].Text).IsEqual("Exit");
     }
 
-    [TestCase]
+    [GdUnit4.TestCase]
     public void Show()
     {
         _singleButtonPopUp.Show(true);
@@ -87,7 +88,7 @@ public class PopUpTests
         AssertThat(_singleButtonPopUp.GetProcessMode()).IsEqual(Node.ProcessModeEnum.Inherit);
     }
 
-    [TestCase]
+    [GdUnit4.TestCase]
     public void Hide()
     {
         _singleButtonPopUp.Show(false);
@@ -97,7 +98,7 @@ public class PopUpTests
         AssertThat(_singleButtonPopUp.GetProcessMode()).IsEqual(Node.ProcessModeEnum.Disabled);
     }
 
-    [TestCase]
+    [GdUnit4.TestCase]
     public void SceneMap()
     {
         var exitGame = PopUpMap.Scene[PopUpType.EXIT_GAME];
@@ -105,7 +106,7 @@ public class PopUpTests
         AssertThat(exitGame.ResourcePath).Contains(DualButtonPopUpPath);
     }
 
-    [TestCase]
+    [GdUnit4.TestCase]
     public void ConfigMap()
     {
         var exitGame = PopUpMap.Config[PopUpType.EXIT_GAME];
@@ -117,7 +118,7 @@ public class PopUpTests
         AssertThat(exitGame.ButtonText[1]).IsEqual("Exit");
     }
 
-    [After]
+    [TearDown]
     public void TearDown()
     {
         _scene.Dispose();

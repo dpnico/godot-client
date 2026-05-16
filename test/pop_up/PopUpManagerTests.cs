@@ -1,4 +1,5 @@
 using System;
+using NUnit.Framework;
 using GdUnit4;
 using Godot;
 using GodotClient.PopUps;
@@ -16,7 +17,7 @@ public class PopUpManagerTests
 
     private PopUpManager _manager;
 
-    [Before]
+    [SetUp]
     public void SetUp()
     {
         _scene = _testScene.Instantiate<TestScene>();
@@ -24,7 +25,7 @@ public class PopUpManagerTests
         _manager = new PopUpManager(_scene);
     }
 
-    [TestCase]
+    [GdUnit4.TestCase]
     public void ShowPopUp()
     {
         _manager.ShowPopUp(PopUpType.EXIT_GAME);
@@ -39,7 +40,7 @@ public class PopUpManagerTests
         AssertThat(popUp.GetButtons()[1].Text).IsEqual("Exit");
     }
 
-    [TestCase]
+    [GdUnit4.TestCase]
     public void RemovePopUp()
     {
         _manager.ShowPopUp(PopUpType.EXIT_GAME);
@@ -50,14 +51,14 @@ public class PopUpManagerTests
         AssertThat(_manager.GetStack().Count).IsEqual(0);
     }
 
-    [TestCase]
+    [GdUnit4.TestCase]
     [ThrowsException(typeof(InvalidOperationException), "Can't remove a pop-up from an empty stack.")]
     public void RemovePopUpFromEmptyStack()
     {
         _manager.RemovePopUp();
     }
 
-    [TestCase]
+    [GdUnit4.TestCase]
     public void ClearStack()
     {
         _manager.ShowPopUp(PopUpType.EXIT_GAME);
@@ -69,7 +70,7 @@ public class PopUpManagerTests
         AssertThat(_manager.GetStack().Count).IsEqual(0);
     }
 
-    [After]
+    [TearDown]
     public void TearDown()
     {
         _scene.Dispose();
