@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Godot;
 
 namespace GodotClient.PopUps;
 
@@ -47,11 +46,26 @@ public class PopUpManager
         }
     }
 
-    public void RemovePopUp(PopUpType type)
+    /// <summary>
+    /// Removes the pop-up at the top of the stack.
+    /// </summary>
+    public void RemovePopUp()
     {
+        if (_popUpStack.Count == 0)
+        {
+            throw new InvalidOperationException("Can't remove a pop-up from an empty stack.");
+        }
         var popUp = _popUpStack.Pop();
         ShowMostRecent(true);
         PopUpRemoved?.Invoke(popUp.GetPopUpType());
+    }
+
+    /// <summary>
+    /// Clears the pop-up stack.
+    /// </summary>
+    public void ClearStack()
+    {
+        _popUpStack.Clear();
     }
 
     /// <summary>

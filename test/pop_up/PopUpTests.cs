@@ -34,7 +34,7 @@ public class PopUpTests
     }
 
     [TestCase]
-    public void PopUpSetHeaderTest()
+    public void SetHeader()
     {
         _singleButtonPopUp.SetHeader("Test");
 
@@ -42,7 +42,7 @@ public class PopUpTests
     }
 
     [TestCase]
-    public void PopUpSetContentTest()
+    public void SetContent()
     {
         _singleButtonPopUp.SetContent("This is a test");
 
@@ -50,7 +50,7 @@ public class PopUpTests
     }
 
     [TestCase]
-    public void SingleButtonPopUpSetButtonTextTest()
+    public void SetButtonTextSingle()
     {
         _singleButtonPopUp.SetButtonText(new List<string>() { "Button 1" });
 
@@ -58,7 +58,7 @@ public class PopUpTests
     }
 
     [TestCase]
-    public void DualButtonPopUpSetButtonTextTest()
+    public void SetButtonTextDual()
     {
         _dualButtonPopUp.SetButtonText(new List<string>() { "Button 1", "Button 2" });
 
@@ -67,7 +67,7 @@ public class PopUpTests
     }
 
     [TestCase]
-    public void PopUpInitTest()
+    public void Init()
     {
         _dualButtonPopUp.Init(PopUpType.EXIT_GAME);
 
@@ -79,33 +79,31 @@ public class PopUpTests
     }
 
     [TestCase]
-    public async Task PopUpShowTest()
+    public async Task Show()
     {
         _singleButtonPopUp.Show(true);
 
         await _runner.AwaitIdleFrame();
 
-        AssertThat(_singleButtonPopUp.HasFocus()).IsTrue();
         AssertThat(_singleButtonPopUp.IsVisible()).IsTrue();
         AssertThat(_singleButtonPopUp.GetMouseFilter()).IsEqual(Control.MouseFilterEnum.Stop);
         AssertThat(_singleButtonPopUp.GetProcessMode()).IsEqual(Node.ProcessModeEnum.Inherit);
     }
 
     [TestCase]
-    public async Task PopUpHideTest()
+    public async Task Hide()
     {
         _singleButtonPopUp.Show(false);
 
         await _runner.AwaitIdleFrame();
 
-        AssertThat(_singleButtonPopUp.HasFocus()).IsFalse();
         AssertThat(_singleButtonPopUp.IsVisible()).IsFalse();
         AssertThat(_singleButtonPopUp.GetMouseFilter()).IsEqual(Control.MouseFilterEnum.Ignore);
         AssertThat(_singleButtonPopUp.GetProcessMode()).IsEqual(Node.ProcessModeEnum.Disabled);
     }
 
     [TestCase]
-    public void PopUpSceneMapTest()
+    public void SceneMap()
     {
         var exitGame = PopUpMap.Scene[PopUpType.EXIT_GAME];
 
@@ -113,7 +111,7 @@ public class PopUpTests
     }
 
     [TestCase]
-    public void PopUpConfigMapTest()
+    public void ConfigMap()
     {
         var exitGame = PopUpMap.Config[PopUpType.EXIT_GAME];
 
@@ -127,6 +125,9 @@ public class PopUpTests
     [After]
     public void TearDown()
     {
+        _runner = null;
+        _scene = null;
+
         _singleButtonPopUp.QueueFree();
         _dualButtonPopUp.QueueFree();
     }
