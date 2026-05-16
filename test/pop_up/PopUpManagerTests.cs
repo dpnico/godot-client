@@ -46,7 +46,7 @@ public class PopUpManagerTests
     {
         _manager.ShowPopUp(PopUpType.EXIT_GAME);
         _manager.RemovePopUp();
-        
+
         await _runner.AwaitIdleFrame();
 
         AssertThat(_scene.GetChildCount()).IsEqual(0);
