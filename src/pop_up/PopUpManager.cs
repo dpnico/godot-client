@@ -66,6 +66,7 @@ public class PopUpManager
         var popUp = _popUpStack.Pop();
         ShowMostRecent(true);
         PopUpRemoved?.Invoke(popUp.GetPopUpType());
+        popUp.QueueFree();
     }
 
     /// <summary>
