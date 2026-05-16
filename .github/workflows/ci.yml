@@ -4,8 +4,9 @@ on:
   push:
   pull_request:
 
-container:
-  image: liphium/godot-mono:4.6.2
+env:
+  container:
+    image: liphium/godot-mono:4.6.2
     
 permissions:
   contents: read
