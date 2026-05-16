@@ -47,11 +47,11 @@ public class PopUpManager
     /// <param name="show"></param>
     public void ShowMostRecent(bool show)
     {
-        var mostRecent = _popUpStack.Peek();
-        if (mostRecent != null)
+        if (_popUpStack.Count == 0)
         {
-            mostRecent.Show(show);
+            return;
         }
+        _popUpStack.Peek().Show(show);
     }
 
     /// <summary>
