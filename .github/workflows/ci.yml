@@ -32,6 +32,8 @@ jobs:
         
       - name: Test
         run: |
+          echo $PATH
+          which xvfb-run
           godot --headless --import
           godot --headless --build-solutions --quit
           chmod +x addons/gdUnit4/runtest.sh
