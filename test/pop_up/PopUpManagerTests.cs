@@ -44,6 +44,7 @@ public class PopUpManagerTests
     public void RemovePopUp()
     {
         _manager.ShowPopUp(PopUpType.EXIT_GAME);
+        AssertThat(_manager.GetRoot().GetChildCount()).IsEqual(1);
         _manager.RemovePopUp();
 
         AssertThat(_manager.GetRoot().GetChildCount()).IsEqual(0);
