@@ -27,6 +27,9 @@ jobs:
       - name: Lint
         run: dotnet format godot-client.sln --verify-no-changes --verbosity diagnostic
         
+      - name: Clear Cache
+        run: rm -rf ~/.local/share/godot ~/.cache/godot .godot || true
+        
       - name: Build Godot Project
         run: dotnet build godot-client.sln
         
