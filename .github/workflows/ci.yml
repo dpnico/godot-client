@@ -35,8 +35,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Debug
-        run: find . -name "*.sln"  
+      - name: Checkout
+        uses: actions/checkout@v4
       
       - name: Test
         uses: godot-gdunit-labs/gdUnit4-action@v1
