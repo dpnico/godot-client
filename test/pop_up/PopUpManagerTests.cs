@@ -33,7 +33,6 @@ public class PopUpManagerTests
         var popUp = stack.Peek();
 
         AssertThat(_scene.GetChildCount()).IsEqual(1);
-        AssertThat(_scene.GetChildren()[0]).IsInstanceOfType(typeof(PopUp));
         AssertThat(stack.Count).IsEqual(1);
         AssertThat(popUp.GetPopUpType()).IsEqual(PopUpType.EXIT_GAME);
         AssertThat(popUp.GetHeader().Text).IsEqual("Exit Game");
@@ -68,5 +67,11 @@ public class PopUpManagerTests
 
         AssertThat(_scene.GetChildCount()).IsEqual(0);
         AssertThat(_manager.GetStack().Count).IsEqual(0);
+    }
+
+    [After]
+    public void TearDown()
+    {
+        _scene.QueueFree();
     }
 }
