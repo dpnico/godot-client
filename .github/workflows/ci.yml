@@ -14,9 +14,6 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
-    
-    container:
-      image: liphium/godot-mono:4.6.2
 
     steps:
       - name: Checkout
@@ -29,9 +26,6 @@ jobs:
 
       - name: Lint
         run: dotnet format godot-client.sln --verify-no-changes --verbosity diagnostic
-        
-      - name: Install xvfb
-        run: apt-get update && apt-get install -y xvfb
         
       - name: Test
         uses: godot-gdunit-labs/gdUnit4-action@v1
