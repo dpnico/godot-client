@@ -10,7 +10,7 @@ namespace GodotClient.PopUps;
 public class PopUpManager
 {
     private readonly Node _root;
-    private readonly Stack<PopUp> _popUpStack = new Stack<PopUp>();
+    private readonly Stack<PopUp> _popUpStack = new();
 
     public event Action<PopUpType> PopUpRemoved;
 

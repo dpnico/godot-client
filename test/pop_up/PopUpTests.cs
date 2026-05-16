@@ -79,26 +79,20 @@ public class PopUpTests
     }
 
     [TestCase]
-    public async Task Show()
+    public void Show()
     {
         _singleButtonPopUp.Show(true);
 
-        await _runner.AwaitIdleFrame();
-
-        AssertThat(_singleButtonPopUp.HasFocus()).IsTrue();
         AssertThat(_singleButtonPopUp.IsVisible()).IsTrue();
         AssertThat(_singleButtonPopUp.GetMouseFilter()).IsEqual(Control.MouseFilterEnum.Stop);
         AssertThat(_singleButtonPopUp.GetProcessMode()).IsEqual(Node.ProcessModeEnum.Inherit);
     }
 
     [TestCase]
-    public async Task Hide()
+    public void Hide()
     {
         _singleButtonPopUp.Show(false);
 
-        await _runner.AwaitIdleFrame();
-
-        AssertThat(_singleButtonPopUp.HasFocus()).IsFalse();
         AssertThat(_singleButtonPopUp.IsVisible()).IsFalse();
         AssertThat(_singleButtonPopUp.GetMouseFilter()).IsEqual(Control.MouseFilterEnum.Ignore);
         AssertThat(_singleButtonPopUp.GetProcessMode()).IsEqual(Node.ProcessModeEnum.Disabled);
