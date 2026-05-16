@@ -120,7 +120,7 @@ public class PopUpTests
     [After]
     public void TearDown()
     {
-        _runner.Dispose();
         _scene.QueueFree();
+        _runner.Dispose();
     }
 }
