@@ -27,9 +27,9 @@ public enum PopUpType
 public static class PopUpMap
 {
     private static readonly PackedScene SingleButtonPopUp =
-        GD.Load<PackedScene>("res://scenes/pop_ups/single_button_pop_up.tscn");
+        GD.Load<PackedScene>("res://scenes/pop_up/single_button_pop_up.tscn");
     private static readonly PackedScene DualButtonPopUp =
-        GD.Load<PackedScene>("res://scenes/pop_ups/dual_button_pop_up.tscn");
+        GD.Load<PackedScene>("res://scenes/pop_up/dual_button_pop_up.tscn");
 
     public static readonly IReadOnlyDictionary<PopUpType, PackedScene> Scene =
         new Dictionary<PopUpType, PackedScene>()
