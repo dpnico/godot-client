@@ -41,12 +41,10 @@ public class PopUpManagerTests
     }
 
     [TestCase]
-    public async Task RemovePopUp()
+    public void RemovePopUp()
     {
         _manager.ShowPopUp(PopUpType.EXIT_GAME);
         _manager.RemovePopUp();
-
-        await _runner.AwaitIdleFrame();
 
         AssertThat(_scene.GetChildCount()).IsEqual(0);
         AssertThat(_manager.GetStack().Count).IsEqual(0);
