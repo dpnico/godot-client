@@ -25,7 +25,7 @@ jobs:
           dotnet-version: '8.0.x'
           
       - name: Build Godot Project
-        run: dotnet build godot-client.sln
+        run: ls -R | dotnet build godot-client.sln
 
       - name: Lint
         run: dotnet format godot-client.sln --verify-no-changes --verbosity diagnostic
