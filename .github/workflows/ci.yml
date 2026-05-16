@@ -18,14 +18,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        
+      - name: Debug
+        run: find . -name "*.sln"
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-          
-      - name: Debug
-        run: find . -name "*.sln"
           
       - name: Build Godot Project
         run: dotnet build godot-client.sln
