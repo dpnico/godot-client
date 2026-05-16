@@ -30,14 +30,9 @@ jobs:
       - name: Lint
         run: dotnet format godot-client.sln --verify-no-changes --verbosity diagnostic
         
-      - name: Prepare Godot
-        run: godot --headless --import | godot --headless --build-solutions --quit
-
       - name: Test
-        uses: godot-gdunit-labs/gdUnit4-action@v1
-        env:
-          GODOT_BIN: /godot/Godot
-        with:
-          godot-net: true
-          godot-version: '4.6.2'
-          paths: 'res://test'
+        run: |
+          godot --headless --import
+          godot --headless --build-solutions --quit
+          chmod +x addons/gdUnit4/runtest.sh
+          bash runtest.sh
