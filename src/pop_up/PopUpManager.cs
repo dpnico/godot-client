@@ -67,7 +67,7 @@ public class PopUpManager
         ShowMostRecent(true);
         PopUpRemoved?.Invoke(popUp.GetPopUpType());
         _root.RemoveChild(popUp);
-        popUp.QueueFree();
+        popUp.Free();
     }
 
     /// <summary>
