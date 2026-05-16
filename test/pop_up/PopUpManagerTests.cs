@@ -1,5 +1,6 @@
 using System;
 using GdUnit4;
+using Godot;
 using GodotClient.PopUps;
 using static GdUnit4.Assertions;
 
@@ -9,12 +10,18 @@ namespace GodotClient.Test.PopUps;
 [RequireGodotRuntime]
 public class PopUpManagerTests
 {
+    private ISceneRunner _runner;
+    private Node _scene;
+
     private PopUpManager _manager;
 
     [Before]
     public void SetUp()
     {
-        _manager = new PopUpManager();
+        _runner = ISceneRunner.Load("res://scenes/test/test.tscn");
+        _scene = _runner.Scene();
+
+        _manager = new PopUpManager(_scene);
     }
 
     [TestCase]
@@ -24,6 +31,7 @@ public class PopUpManagerTests
         var stack = _manager.GetStack();
         var popUp = stack.Peek();
 
+        AssertThat(_scene.GetChildCount()).IsEqual(1);
         AssertThat(stack.Count).IsEqual(1);
         AssertThat(popUp.GetPopUpType()).IsEqual(PopUpType.EXIT_GAME);
         AssertThat(popUp.GetHeader()).IsEqual("Exit Game");
@@ -37,6 +45,7 @@ public class PopUpManagerTests
         _manager.ShowPopUp(PopUpType.EXIT_GAME);
         _manager.RemovePopUp();
 
+        AssertThat(_scene.GetChildCount()).IsEqual(0);
         AssertThat(_manager.GetStack().Count).IsEqual(0);
     }
 
@@ -53,6 +62,7 @@ public class PopUpManagerTests
         _manager.ShowPopUp(PopUpType.EXIT_GAME);
         _manager.ClearStack();
 
+        AssertThat(_scene.GetChildCount()).IsEqual(0);
         AssertThat(_manager.GetStack().Count).IsEqual(0);
     }
 }

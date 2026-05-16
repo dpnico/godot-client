@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Godot;
 
 namespace GodotClient.PopUps;
 
@@ -8,9 +9,15 @@ namespace GodotClient.PopUps;
 /// </summary>
 public class PopUpManager
 {
-    private Stack<PopUp> _popUpStack = new Stack<PopUp>();
+    private readonly Node _root;
+    private readonly Stack<PopUp> _popUpStack = new Stack<PopUp>();
 
     public event Action<PopUpType> PopUpRemoved;
+
+    public PopUpManager(Node root)
+    {
+        _root = root;
+    }
 
     /// <summary>
     /// Instantiates and shows a new pop-up of the specified type.
@@ -29,8 +36,9 @@ public class PopUpManager
         }
         popUp.Init(type);
         ShowMostRecent(false);
-        popUp.Show(true);
         _popUpStack.Push(popUp);
+        _root.AddChild(popUp);
+        popUp.Show(true);
     }
 
     /// <summary>
