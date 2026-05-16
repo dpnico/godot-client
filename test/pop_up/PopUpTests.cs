@@ -33,6 +33,7 @@ public class PopUpTests
         _scene.AddChild(_dualButtonPopUp);
     }
 
+    [NUnit.Framework.TestCase]
     [GdUnit4.TestCase]
     public void SetHeader()
     {
@@ -41,6 +42,7 @@ public class PopUpTests
         AssertThat(_singleButtonPopUp.GetHeader().Text).IsEqual("Test");
     }
 
+    [NUnit.Framework.TestCase]
     [GdUnit4.TestCase]
     public void SetContent()
     {
@@ -49,6 +51,7 @@ public class PopUpTests
         AssertThat(_singleButtonPopUp.GetContent().Text).IsEqual("This is a test");
     }
 
+    [NUnit.Framework.TestCase]
     [GdUnit4.TestCase]
     public void SetButtonTextSingle()
     {
@@ -57,6 +60,7 @@ public class PopUpTests
         AssertThat(_singleButtonPopUp.GetButtons()[0].Text).IsEqual("Button 1");
     }
 
+    [NUnit.Framework.TestCase]
     [GdUnit4.TestCase]
     public void SetButtonTextDual()
     {
@@ -66,6 +70,7 @@ public class PopUpTests
         AssertThat(_dualButtonPopUp.GetButtons()[1].Text).IsEqual("Button 2");
     }
 
+    [NUnit.Framework.TestCase]
     [GdUnit4.TestCase]
     public void Init()
     {
@@ -78,6 +83,7 @@ public class PopUpTests
         AssertThat(_dualButtonPopUp.GetButtons()[1].Text).IsEqual("Exit");
     }
 
+    [NUnit.Framework.TestCase]
     [GdUnit4.TestCase]
     public void Show()
     {
@@ -88,6 +94,7 @@ public class PopUpTests
         AssertThat(_singleButtonPopUp.GetProcessMode()).IsEqual(Node.ProcessModeEnum.Inherit);
     }
 
+    [NUnit.Framework.TestCase]
     [GdUnit4.TestCase]
     public void Hide()
     {
@@ -98,6 +105,7 @@ public class PopUpTests
         AssertThat(_singleButtonPopUp.GetProcessMode()).IsEqual(Node.ProcessModeEnum.Disabled);
     }
 
+    [NUnit.Framework.TestCase]
     [GdUnit4.TestCase]
     public void SceneMap()
     {
@@ -106,6 +114,7 @@ public class PopUpTests
         AssertThat(exitGame.ResourcePath).Contains(DualButtonPopUpPath);
     }
 
+    [NUnit.Framework.TestCase]
     [GdUnit4.TestCase]
     public void ConfigMap()
     {

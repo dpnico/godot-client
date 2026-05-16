@@ -25,6 +25,7 @@ public class PopUpManagerTests
         _manager = new PopUpManager(_scene);
     }
 
+    [NUnit.Framework.TestCase]
     [GdUnit4.TestCase]
     public void ShowPopUp()
     {
@@ -40,6 +41,7 @@ public class PopUpManagerTests
         AssertThat(popUp.GetButtons()[1].Text).IsEqual("Exit");
     }
 
+    [NUnit.Framework.TestCase]
     [GdUnit4.TestCase]
     public void RemovePopUp()
     {
@@ -51,6 +53,7 @@ public class PopUpManagerTests
         AssertThat(_manager.GetStack().Count).IsEqual(0);
     }
 
+    [NUnit.Framework.TestCase]
     [GdUnit4.TestCase]
     [ThrowsException(typeof(InvalidOperationException), "Can't remove a pop-up from an empty stack.")]
     public void RemovePopUpFromEmptyStack()
@@ -58,6 +61,7 @@ public class PopUpManagerTests
         _manager.RemovePopUp();
     }
 
+    [NUnit.Framework.TestCase]
     [GdUnit4.TestCase]
     public void ClearStack()
     {
