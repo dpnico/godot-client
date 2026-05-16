@@ -72,6 +72,11 @@ public class PopUpManagerTests
     [After]
     public void TearDown()
     {
+        _manager.ClearStack();
+        foreach (Node n in _scene.GetChildren())
+        {
+            n.QueueFree();
+        }
         _scene.QueueFree();
         _manager = null;
         _runner.Dispose();
