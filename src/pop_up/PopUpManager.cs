@@ -75,7 +75,10 @@ public class PopUpManager
     /// </summary>
     public void ClearStack()
     {
-        _popUpStack.Clear();
+        while (_popUpStack.Count > 0)
+        {
+            RemovePopUp();
+        }
     }
 
     /// <summary>
