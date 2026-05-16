@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using GdUnit4;
 using Godot;
 using GodotClient.PopUps;
@@ -40,10 +41,11 @@ public class PopUpManagerTests
     }
 
     [TestCase]
-    public void RemovePopUp()
+    public async Task RemovePopUp()
     {
         _manager.ShowPopUp(PopUpType.EXIT_GAME);
         _manager.RemovePopUp();
+        await _runner.AwaitIdleFrame();
 
         AssertThat(_scene.GetChildCount()).IsEqual(0);
         AssertThat(_manager.GetStack().Count).IsEqual(0);
