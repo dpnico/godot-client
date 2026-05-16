@@ -10,6 +10,7 @@ namespace GodotClient.Test.PopUps;
 [RequireGodotRuntime]
 public class PopUpTests
 {
+    private readonly SceneTree _tree = new();
     private ISceneRunner _runner;
     private Node _scene;
 
@@ -25,6 +26,7 @@ public class PopUpTests
     {
         _runner = ISceneRunner.Load("res://scenes/test/test.tscn");
         _scene = _runner.Scene();
+        _tree.Root.AddChild(_scene);
 
         _singleButtonPopUp = _singleButtonPopUpScene.Instantiate<PopUp>();
         _dualButtonPopUp = _dualButtonPopUpScene.Instantiate<PopUp>();
@@ -82,6 +84,7 @@ public class PopUpTests
     {
         _singleButtonPopUp.Show(true);
 
+        AssertThat(_singleButtonPopUp.HasFocus()).IsTrue();
         AssertThat(_singleButtonPopUp.IsVisible()).IsTrue();
         AssertThat(_singleButtonPopUp.GetMouseFilter()).IsEqual(Control.MouseFilterEnum.Stop);
         AssertThat(_singleButtonPopUp.GetProcessMode()).IsEqual(Node.ProcessModeEnum.Inherit);
@@ -92,6 +95,7 @@ public class PopUpTests
     {
         _singleButtonPopUp.Show(false);
 
+        AssertThat(_singleButtonPopUp.HasFocus()).IsFalse();
         AssertThat(_singleButtonPopUp.IsVisible()).IsFalse();
         AssertThat(_singleButtonPopUp.GetMouseFilter()).IsEqual(Control.MouseFilterEnum.Ignore);
         AssertThat(_singleButtonPopUp.GetProcessMode()).IsEqual(Node.ProcessModeEnum.Disabled);
