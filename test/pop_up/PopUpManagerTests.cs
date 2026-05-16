@@ -74,6 +74,5 @@ public class PopUpManagerTests
     {
         _scene.QueueFree();
         _manager = null;
-        _runner.Dispose();
     }
 }
