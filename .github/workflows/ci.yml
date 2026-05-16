@@ -35,4 +35,4 @@ jobs:
           godot --headless --import
           godot --headless --build-solutions --quit
           chmod +x addons/gdUnit4/runtest.sh
-          bash addons/gdUnit4/runtest.sh
+          bash addons/gdUnit4/runtest.sh --godot_binary /godot/Godot
