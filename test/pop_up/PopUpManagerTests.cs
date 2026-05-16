@@ -1,8 +1,8 @@
 using System;
-using System.Threading.Tasks;
 using GdUnit4;
 using Godot;
 using GodotClient.PopUps;
+using GodotClient.Test.Testing;
 using static GdUnit4.Assertions;
 
 namespace GodotClient.Test.PopUps;
@@ -11,16 +11,15 @@ namespace GodotClient.Test.PopUps;
 [RequireGodotRuntime]
 public class PopUpManagerTests
 {
-    private ISceneRunner _runner;
-    private Node _scene;
+    private readonly PackedScene _testScene = GD.Load<PackedScene>("res://scenes/test/test.tscn");
+    private TestScene _scene;
 
     private PopUpManager _manager;
 
     [Before]
     public void SetUp()
     {
-        _runner = ISceneRunner.Load("res://scenes/test/test.tscn");
-        _scene = _runner.Scene();
+        _scene = _testScene.Instantiate<TestScene>();
 
         _manager = new PopUpManager(_scene);
     }
