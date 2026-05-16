@@ -18,9 +18,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
-      - name: Debug
-        run: find . -name "*.sln"
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v4
@@ -37,7 +34,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    steps:  
+    steps:
+      - name: Debug
+        run: find . -name "*.sln"  
+      
       - name: Test
         uses: godot-gdunit-labs/gdUnit4-action@v1
         with:
