@@ -1,7 +1,0 @@
-<RunSettings>
-  <RunConfiguration>
-    <EnvironmentVariables>
-      <GODOT_BIN>Godot_v4.x-stable_mono_win64.exe</GODOT_BIN>
-    </EnvironmentVariables>
-  </RunConfiguration>
-</RunSettings>
