@@ -34,8 +34,8 @@ public class PopUpManagerTests
         AssertThat(_scene.GetChildCount()).IsEqual(1);
         AssertThat(stack.Count).IsEqual(1);
         AssertThat(popUp.GetPopUpType()).IsEqual(PopUpType.EXIT_GAME);
-        AssertThat(popUp.GetHeader()).IsEqual("Exit Game");
-        AssertThat(popUp.GetContent()).IsEqual("Are you sure you want to exit the game?");
+        AssertThat(popUp.GetHeader().Text).IsEqual("Exit Game");
+        AssertThat(popUp.GetContent().Text).IsEqual("Are you sure you want to exit the game?");
         AssertThat(popUp.GetButtons()[1].Text).IsEqual("Exit");
     }
 
