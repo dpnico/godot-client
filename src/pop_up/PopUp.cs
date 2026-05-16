@@ -89,13 +89,16 @@ public partial class PopUp : Control
     /// <param name="show"></param>
     public virtual void Show(bool show)
     {
-        if (show)
+        if (GetViewport() != null)
         {
-            GrabFocus();
-        }
-        else
-        {
-            GetViewport().GuiReleaseFocus();
+            if (show)
+            {
+                GrabFocus();
+            }
+            else
+            {
+                GetViewport().GuiReleaseFocus();
+            }
         }
         SetVisible(show);
         var filter = show ? MouseFilterEnum.Stop : MouseFilterEnum.Ignore;
