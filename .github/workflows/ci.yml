@@ -19,16 +19,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         
-      - name: Setup .NET
+      - name: Set up .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
       - name: Lint
         run: dotnet format godot-client.sln --verify-no-changes --verbosity diagnostic
-        
-      - name: Clear Cache
-        run: rm -rf ~/.local/share/godot ~/.cache/godot .godot || true
         
       - name: Build Godot Project
         run: dotnet build godot-client.sln
@@ -38,6 +35,5 @@ jobs:
         env:
           GODOT_BIN: /home/runner/godot-linux/godot
         with:
-          godot-version: '4.6.2'
           paths: 'res://test'
           godot-net: true
