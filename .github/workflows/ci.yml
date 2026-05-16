@@ -11,14 +11,14 @@ permissions:
 
 jobs:
 
-  test:
+  lint:
 
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
+
       - name: Set up .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -27,6 +27,11 @@ jobs:
       - name: Lint
         run: dotnet format godot-client.sln --verify-no-changes --verbosity diagnostic
         
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:  
       - name: Test
         uses: godot-gdunit-labs/gdUnit4-action@v1
         with:
