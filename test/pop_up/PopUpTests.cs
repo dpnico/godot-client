@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using NUnit.Framework;
 using GdUnit4;
 using Godot;
 using GodotClient.PopUps;
@@ -22,7 +21,6 @@ public class PopUpTests
     private PopUp _singleButtonPopUp;
     private PopUp _dualButtonPopUp;
 
-    [SetUp]
     public void SetUp()
     {
         _scene = _testScene.Instantiate<TestScene>();
@@ -33,47 +31,60 @@ public class PopUpTests
         _scene.AddChild(_dualButtonPopUp);
     }
 
-    [NUnit.Framework.TestCase]
-    [GdUnit4.TestCase]
+    [TestCase]
     public void SetHeader()
     {
+        SetUp();
+
         _singleButtonPopUp.SetHeader("Test");
 
         AssertThat(_singleButtonPopUp.GetHeader().Text).IsEqual("Test");
+
+        TearDown();
     }
 
-    [NUnit.Framework.TestCase]
-    [GdUnit4.TestCase]
+    [TestCase]
     public void SetContent()
     {
+        SetUp();
+
         _singleButtonPopUp.SetContent("This is a test");
 
         AssertThat(_singleButtonPopUp.GetContent().Text).IsEqual("This is a test");
+
+        TearDown();
     }
 
-    [NUnit.Framework.TestCase]
-    [GdUnit4.TestCase]
+    [TestCase]
     public void SetButtonTextSingle()
     {
+        SetUp();
+
         _singleButtonPopUp.SetButtonText(new List<string>() { "Button 1" });
 
         AssertThat(_singleButtonPopUp.GetButtons()[0].Text).IsEqual("Button 1");
+
+        TearDown();
     }
 
-    [NUnit.Framework.TestCase]
-    [GdUnit4.TestCase]
+    [TestCase]
     public void SetButtonTextDual()
     {
+        SetUp();
+
         _dualButtonPopUp.SetButtonText(new List<string>() { "Button 1", "Button 2" });
 
         AssertThat(_dualButtonPopUp.GetButtons()[0].Text).IsEqual("Button 1");
         AssertThat(_dualButtonPopUp.GetButtons()[1].Text).IsEqual("Button 2");
+
+        TearDown();
     }
 
-    [NUnit.Framework.TestCase]
-    [GdUnit4.TestCase]
+    [TestCase]
     public void Init()
     {
+        SetUp();
+
         _dualButtonPopUp.Init(PopUpType.EXIT_GAME);
 
         AssertThat(_dualButtonPopUp.GetPopUpType()).IsEqual(PopUpType.EXIT_GAME);
@@ -81,43 +92,55 @@ public class PopUpTests
         AssertThat(_dualButtonPopUp.GetContent().Text).IsEqual("Are you sure you want to exit the game?");
         AssertThat(_dualButtonPopUp.GetButtons()[0].Text).IsEqual("Cancel");
         AssertThat(_dualButtonPopUp.GetButtons()[1].Text).IsEqual("Exit");
+
+        TearDown();
     }
 
-    [NUnit.Framework.TestCase]
-    [GdUnit4.TestCase]
+    [TestCase]
     public void Show()
     {
+        SetUp();
+
         _singleButtonPopUp.Show(true);
 
         AssertThat(_singleButtonPopUp.IsVisible()).IsTrue();
         AssertThat(_singleButtonPopUp.GetMouseFilter()).IsEqual(Control.MouseFilterEnum.Stop);
         AssertThat(_singleButtonPopUp.GetProcessMode()).IsEqual(Node.ProcessModeEnum.Inherit);
+
+        TearDown();
     }
 
-    [NUnit.Framework.TestCase]
-    [GdUnit4.TestCase]
+    [TestCase]
     public void Hide()
     {
+        SetUp();
+
         _singleButtonPopUp.Show(false);
 
         AssertThat(_singleButtonPopUp.IsVisible()).IsFalse();
         AssertThat(_singleButtonPopUp.GetMouseFilter()).IsEqual(Control.MouseFilterEnum.Ignore);
         AssertThat(_singleButtonPopUp.GetProcessMode()).IsEqual(Node.ProcessModeEnum.Disabled);
+
+        TearDown();
     }
 
-    [NUnit.Framework.TestCase]
-    [GdUnit4.TestCase]
+    [TestCase]
     public void SceneMap()
     {
+        SetUp();
+
         var exitGame = PopUpMap.Scene[PopUpType.EXIT_GAME];
 
         AssertThat(exitGame.ResourcePath).Contains(DualButtonPopUpPath);
+
+        TearDown();
     }
 
-    [NUnit.Framework.TestCase]
-    [GdUnit4.TestCase]
+    [TestCase]
     public void ConfigMap()
     {
+        SetUp();
+
         var exitGame = PopUpMap.Config[PopUpType.EXIT_GAME];
 
         AssertThat(exitGame.Header).IsEqual("Exit Game");
@@ -125,9 +148,10 @@ public class PopUpTests
         AssertThat(exitGame.ButtonText.Count).IsEqual(2);
         AssertThat(exitGame.ButtonText[0]).IsEqual("Cancel");
         AssertThat(exitGame.ButtonText[1]).IsEqual("Exit");
+
+        TearDown();
     }
 
-    [TearDown]
     public void TearDown()
     {
         _scene.Dispose();

@@ -1,5 +1,4 @@
 using System;
-using NUnit.Framework;
 using GdUnit4;
 using Godot;
 using GodotClient.PopUps;
@@ -17,7 +16,6 @@ public class PopUpManagerTests
 
     private PopUpManager _manager;
 
-    [SetUp]
     public void SetUp()
     {
         _scene = _testScene.Instantiate<TestScene>();
@@ -25,10 +23,11 @@ public class PopUpManagerTests
         _manager = new PopUpManager(_scene);
     }
 
-    [NUnit.Framework.TestCase]
-    [GdUnit4.TestCase]
+    [TestCase]
     public void ShowPopUp()
     {
+        SetUp();
+
         _manager.ShowPopUp(PopUpType.EXIT_GAME);
         var stack = _manager.GetStack();
         var popUp = stack.Peek();
@@ -39,32 +38,39 @@ public class PopUpManagerTests
         AssertThat(popUp.GetHeader().Text).IsEqual("Exit Game");
         AssertThat(popUp.GetContent().Text).IsEqual("Are you sure you want to exit the game?");
         AssertThat(popUp.GetButtons()[1].Text).IsEqual("Exit");
+
+        TearDown();
     }
 
-    [NUnit.Framework.TestCase]
-    [GdUnit4.TestCase]
+    [TestCase]
     public void RemovePopUp()
     {
+        SetUp();
+
         _manager.ShowPopUp(PopUpType.EXIT_GAME);
         AssertThat(_manager.GetRoot().GetChildCount()).IsEqual(1);
         _manager.RemovePopUp();
 
         AssertThat(_manager.GetRoot().GetChildCount()).IsEqual(0);
         AssertThat(_manager.GetStack().Count).IsEqual(0);
+
+        TearDown();
     }
 
-    [NUnit.Framework.TestCase]
-    [GdUnit4.TestCase]
+    [TestCase]
     [ThrowsException(typeof(InvalidOperationException), "Can't remove a pop-up from an empty stack.")]
     public void RemovePopUpFromEmptyStack()
     {
+        SetUp();
+
         _manager.RemovePopUp();
     }
 
-    [NUnit.Framework.TestCase]
-    [GdUnit4.TestCase]
+    [TestCase]
     public void ClearStack()
     {
+        SetUp();
+
         _manager.ShowPopUp(PopUpType.EXIT_GAME);
         _manager.ShowPopUp(PopUpType.EXIT_GAME);
         _manager.ShowPopUp(PopUpType.EXIT_GAME);
@@ -72,9 +78,10 @@ public class PopUpManagerTests
 
         AssertThat(_manager.GetRoot().GetChildCount()).IsEqual(0);
         AssertThat(_manager.GetStack().Count).IsEqual(0);
+
+        TearDown();
     }
 
-    [TearDown]
     public void TearDown()
     {
         _scene.Dispose();
