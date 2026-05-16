@@ -24,8 +24,11 @@ jobs:
         with:
           dotnet-version: '8.0.x'
           
+      - name: Debug
+        run: find . -name "*.sln"
+          
       - name: Build Godot Project
-        run: ls -R | dotnet build godot-client.sln
+        run: dotnet build godot-client.sln
 
       - name: Lint
         run: dotnet format godot-client.sln --verify-no-changes --verbosity diagnostic
