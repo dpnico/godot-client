@@ -1,15 +1,17 @@
 using Godot;
 using System;
 
-namespace GodotClient.Ingame;
+namespace GodotClient.Ingame.Boards;
 
 /// <summary>
-/// Represents a singlular player's board state and handles its logic.
+/// Represents a singular player's board state and handles its logic.
 /// </summary>
-public partial class Board : Node2D
+public partial class Board : Control
 {
+    private readonly Color _opacity30 = Color.FromHtml("#ffffff4d");
+
     [Export] private TileMapLayer _grid;
-    [Export] private TileMapLayer _ships;
+    [Export] private ShipLayer _ships;
     [Export] private TileMapLayer _markers;
 
     /// <summary>
@@ -17,6 +19,8 @@ public partial class Board : Node2D
     /// </summary>
     public override void _Ready()
     {
+        // For testing purposes, will be removed later
+        SetGridModulate(_opacity30);
     }
 
     /// <summary>
@@ -26,12 +30,12 @@ public partial class Board : Node2D
     public override void _Process(double delta)
     {
     }
-    
+
     /// <summary>
     /// Applies the specified color as modulate of the grid layer.
     /// </summary>
     /// <param name="color"></param>
-    public void SetGridModulate(Color color) 
+    public void SetGridModulate(Color color)
     {
         _grid.SetModulate(color);
     }
