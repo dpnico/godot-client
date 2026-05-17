@@ -1,0 +1,31 @@
+[gd_scene format=4 uid="uid://bi3on32fusa1i"]
+
+[ext_resource type="Texture2D" uid="uid://7t2er2cjqs8p" path="res://resources/textures/board/ships.png" id="1_bu6ig"]
+[ext_resource type="Script" uid="uid://d132js7ex2ql4" path="res://src/ingame/board/ShipLayer.cs" id="2_7g6g0"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x0lrp"]
+texture = ExtResource("1_bu6ig")
+texture_region_size = Vector2i(64, 64)
+0:0/size_in_atlas = Vector2i(4, 1)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(-96, 0)
+0:1/size_in_atlas = Vector2i(3, 1)
+0:1/0 = 0
+0:1/0/texture_origin = Vector2i(-64, 0)
+0:2/size_in_atlas = Vector2i(2, 1)
+0:2/0 = 0
+0:2/0/texture_origin = Vector2i(-32, 0)
+3:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_ob2rw"]
+tile_size = Vector2i(64, 64)
+custom_data_layer_0/name = "Occupied"
+custom_data_layer_0/type = 1
+custom_data_layer_1/name = "Blocked"
+custom_data_layer_1/type = 1
+sources/1 = SubResource("TileSetAtlasSource_x0lrp")
+
+[node name="Ships" type="TileMapLayer" unique_id=40581594]
+tile_map_data = PackedByteArray("AAAAAAAAAQAAAAAAAAAAAAEAAQAAAAEAAAAAAAIAAQAAAAIAAAAAAAMAAQADAAEAAAAFAAAAAQAAAAAAAAAGAAEAAQAAAAEAAAAHAAIAAQAAAAIAAAAIAAMAAQADAAEAAAA=")
+tile_set = SubResource("TileSet_ob2rw")
+script = ExtResource("2_7g6g0")

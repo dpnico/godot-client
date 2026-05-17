@@ -26,4 +26,13 @@ public partial class Board : Node2D
     public override void _Process(double delta)
     {
     }
+    
+    /// <summary>
+    /// Applies the specified color as modulate of the grid layer.
+    /// </summary>
+    /// <param name="color"></param>
+    public void SetGridModulate(Color color) 
+    {
+        _grid.SetModulate(color);
+    }
 }

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cqbyv1424ub28"]
 
 [ext_resource type="Texture2D" uid="uid://dg7g5xear8tqk" path="res://resources/textures/background/water.png" id="1_eiusg"]
-[ext_resource type="PackedScene" uid="uid://oraasfdeyboc" path="res://scenes/ingame/board.tscn" id="2_weujr"]
+[ext_resource type="PackedScene" uid="uid://oraasfdeyboc" path="res://scenes/ingame/board/board.tscn" id="2_weujr"]
 
 [node name="Setup" type="Control" unique_id=742025217]
 layout_mode = 3
@@ -38,6 +38,28 @@ size_flags_vertical = 0
 theme_override_font_sizes/font_size = 50
 text = "Place Your Ships!"
 horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1969639246]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_constants/separation = 35
+
+[node name="Random" type="Button" parent="MarginContainer/HBoxContainer" unique_id=2126463601]
+custom_minimum_size = Vector2(235, 106)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 30
+text = "Random"
+
+[node name="Ready" type="Button" parent="MarginContainer/HBoxContainer" unique_id=386012180]
+custom_minimum_size = Vector2(235, 106)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 30
+text = "Ready"
 
 [node name="Ships" parent="MarginContainer" unique_id=914390148 instance=ExtResource("2_weujr")]
 layout_mode = 2
