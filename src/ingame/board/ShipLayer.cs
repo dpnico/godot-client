@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using System.Collections.Generic;
 
@@ -68,6 +69,11 @@ public partial class ShipLayer : TileMapLayer
     {
     }
     
+    /// <summary>
+    /// Called when there is an input event. The input event propagates up
+    /// through the node tree until a node consumes it.
+    /// </summary>
+    /// <param name="event"></param>
     public override void _Input(InputEvent @event) 
     {
         if (@event is InputEventKey keyEvent && keyEvent.Pressed) 
@@ -129,59 +135,89 @@ public partial class ShipLayer : TileMapLayer
     }
 
     /// <summary>
-    /// Updates occupied and blocked tiles.
+    /// Updates occupied and blocked tiles when a ship is rotated.
     /// </summary>
     /// <param name="pos"></param>
     /// <param name="shipSize"></param>
     /// <param name="rotation"></param>
     public void UpdateTileData(Vector2I pos, int shipSize, int rotation)
     {
+        FreeTilesOnRotation(pos, shipSize, rotation);
+        OccupyTilesOnRotation(pos, shipSize, rotation);
+    }
+
+    /// <summary>
+    /// Frees previously occupied and blocked tiles that are no longer occupied
+    /// or blocked when a ship is rotated.
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="shipSize"></param>
+    /// <param name="rotation"></param>
+    /// <exception cref="ArgumentException"></exception>
+    public void FreeTilesOnRotation(Vector2I pos, int shipSize, int rotation)
+    {
+        Vector2I direction;
         switch (rotation) 
         {
-            case 0:
-                for (int i = 1; i < shipSize; i++)
-                {
-                    // Free no longer occupied tiles
-                    _states[new Vector2I(pos.X + i, pos.Y)] = TileOccupation.FREE;
-                    // Check if previously blocked tiles in rows above and below are still blocked
-                    var topRight = new Vector2I(pos.X + i + 1, pos.Y - 1);
-                    if (_states.ContainsKey(topRight) && !IsBlocked(topRight))
-                    {
-                        _states[topRight] = TileOccupation.FREE;
-                    }
-                    var bottomRight = new Vector2I(pos.X + i + 1, pos.Y + 1);
-                    if (_states.ContainsKey(bottomRight) && !IsBlocked(bottomRight))
-                    {
-                        _states[bottomRight] = TileOccupation.FREE;
-                    }
-                }
-                // Check if previously blocked tile all the way to the right is still blocked
-                var right = new Vector2I(pos.X + shipSize, pos.Y);
-                if (_states.ContainsKey(right) && !IsBlocked(right))
-                {
-                    _states[right] = TileOccupation.FREE;
-                }
-                // Block new tiles
-                for (int i = 0; i < shipSize; i++)
-                {
-                    var tilesToBlock = GetNeighbors(new Vector2I(pos.X, pos.Y + i));
-                    foreach (var t in tilesToBlock)
-                    {
-                        _states[t] = TileOccupation.BLOCKED;
-                    }
-                }
-                // Occupy new tiles
-                for (int i = 0; i < shipSize; i++)
-                {
-                    _states[new Vector2I(pos.X, pos.Y + i)] = TileOccupation.OCCUPIED;
-                }
-                break;
-            case Rotate90:
-                break;
-            case Rotate180:
-                break;
-            case Rotate270:
-                break;
+            case 0: direction = new Vector2I(0, -1); break;
+            case Rotate90: direction = new Vector2I(1, 0); break;
+            case Rotate180: direction = new Vector2I(0, 1); break;
+            case Rotate270: direction = new Vector2I(-1, 0); break;
+            default: throw new ArgumentException($"Invalid rotation: {rotation}.");
+        }
+        var perp = new Vector2I(direction.Y, direction.X);
+        for (int i = 1; i < shipSize; i++)
+        {
+            _states[pos + i * direction] = TileOccupation.FREE; // Occupied tiles
+            
+            TryFree(pos + (i + 1) * direction - perp); // Tiles beside the ship
+            TryFree(pos + (i + i) * direction + perp);
+        }
+        TryFree(pos + shipSize * direction); // Tile at the end of the ship
+    }
+
+    /// <summary>
+    /// Frees the tile at the specified position if it is within the board and
+    /// not blocked by any remaining adjacent occupied tiles.
+    /// </summary>
+    /// <param name="pos"></param>
+    public void TryFree(Vector2I pos)
+    {
+        if (_states.ContainsKey(pos) && !IsBlocked(pos))
+        {
+            _states[pos] = TileOccupation.FREE;
+        }
+    }
+    
+    /// <summary>
+    /// Occupies and blocks new tiles when a ship is rotated.
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="shipSize"></param>
+    /// <param name="rotation"></param>
+    /// <exception cref="ArgumentException"></exception>
+    public void OccupyTilesOnRotation(Vector2I pos, int shipSize, int rotation)
+    {
+        Vector2I direction;
+        switch (rotation) 
+        {
+            case 0: direction = new Vector2I(1, 0); break;
+            case Rotate90: direction = new Vector2I(0, 1); break;
+            case Rotate180: direction = new Vector2I(-1, 0); break;
+            case Rotate270: direction = new Vector2I(0, -1); break;
+            default: throw new ArgumentException($"Invalid rotation: {rotation}.");
+        }
+        for (int i = 0; i < shipSize; i++)
+        {
+            var tilesToBlock = GetNeighbors(pos + direction);
+            foreach (var t in tilesToBlock)
+            {
+                _states[t] = TileOccupation.BLOCKED;
+            }
+        }
+        for (int i = 0; i < shipSize; i++)
+        {
+            _states[pos + direction] = TileOccupation.OCCUPIED;
         }
     }
     
