@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://ewtowi1kuv0g"]
+
+[node name="Input" type="Control" unique_id=106772828]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=359821430]
+custom_minimum_size = Vector2(1080, 680)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -540.0
+offset_top = -282.5
+offset_right = 540.0
+offset_bottom = 282.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1623622693]
+layout_mode = 2
+theme_override_constants/margin_left = 55
+theme_override_constants/margin_top = 35
+theme_override_constants/margin_right = 55
+theme_override_constants/margin_bottom = 35
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=589170366]
+layout_mode = 2
+theme_override_constants/separation = 121
+
+[node name="Header" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1505037051]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Header"
+horizontal_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=497864295]
+custom_minimum_size = Vector2(970, 165)
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+placeholder_text = "Placeholder text"
+alignment = 1
+max_length = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=481935227]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 65
+
+[node name="Button" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2051385692]
+custom_minimum_size = Vector2(435, 116)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 35
+text = "Text"
+
+[node name="Button2" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=215286912]
+custom_minimum_size = Vector2(435, 116)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 35
+text = "Text"
