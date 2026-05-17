@@ -48,7 +48,13 @@ tile_size = Vector2i(64, 64)
 sources/0 = SubResource("TileSetAtlasSource_d24gp")
 sources/1 = SubResource("TileSetAtlasSource_0lbdk")
 
-[node name="Board" type="Node2D" unique_id=914390148 node_paths=PackedStringArray("_grid", "_ships", "_markers")]
+[node name="Board" type="Control" unique_id=867204651 node_paths=PackedStringArray("_grid", "_ships", "_markers")]
+custom_minimum_size = Vector2(768, 768)
+layout_mode = 3
+anchor_right = 0.4
+anchor_bottom = 0.711
+offset_right = -768.0
+offset_bottom = -767.88
 script = ExtResource("1_ff2oy")
 _grid = NodePath("Grid")
 _ships = NodePath("Ships")
