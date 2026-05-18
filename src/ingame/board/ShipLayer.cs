@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace GodotClient.Ingame.Boards;
 
@@ -27,17 +28,22 @@ public partial class ShipLayer : TileMapLayer
     private readonly Vector2I _triple = new Vector2I(0, 1);
     private readonly Vector2I _quad = new Vector2I(0, 0);
     // Rotations
-    private const int Rotate90 = (int)(TileSetAtlasSource.TransformTranspose | TileSetAtlasSource.TransformFlipH);
+    private const int Rotate90 =(int)(TileSetAtlasSource.TransformTranspose | TileSetAtlasSource.TransformFlipH);
     private const int Rotate180 = (int)(TileSetAtlasSource.TransformFlipH | TileSetAtlasSource.TransformFlipV);
     private const int Rotate270 = (int)(TileSetAtlasSource.TransformTranspose | TileSetAtlasSource.TransformFlipV);
+    private readonly Dictionary<int, Vector2I> _direction = new()
+    {
+        { 0, new Vector2I(1, 0) }, { Rotate90, new Vector2I(0, 1) },
+        { Rotate180, new Vector2I(-1, 0) }, { Rotate270, new Vector2I(0, -1) }
+    };
     // Board dimensions
     private const int BoardSizeX = 12;
     private const int BoardSizeY = 12;
 
-    private Dictionary<Vector2I, int> _shipSizes;
-    private readonly Dictionary<Vector2I, int> _positions = new();
-    private readonly Dictionary<Vector2I, int> _rotations = new();
-    private readonly Dictionary<Vector2I, TileOccupation> _states = new();
+    private Dictionary<int, Vector2I> _tileAtlasCoords;
+    private readonly Dictionary<Guid, > _position = new();
+    private readonly Dictionary<Vector2I, int> _rotation = new();
+    private readonly Dictionary<Vector2I, TileOccupation> _state = new();
 
     /// <summary>
     /// Called when the node enters the scene tree for the first time.
@@ -45,9 +51,9 @@ public partial class ShipLayer : TileMapLayer
     public override void _Ready()
     {
         // Store atlas coords of ships
-        _shipSizes = new()
+        _tileAtlasCoords = new()
         {
-            { _single, 1 }, { _double, 2 }, { _triple, 3 }, { _quad, 4 }
+            { 1, _single }, { 2, _double }, { 3, _triple }, { 4, _quad }
         };
         
         // Initialize rotations with 0
@@ -55,8 +61,8 @@ public partial class ShipLayer : TileMapLayer
         {
             for (int y = 0; y < BoardSizeY; y++)
             {
-                _rotations[new Vector2I(x, y)] = 0;
-                _states[new Vector2I(x, y)] = TileOccupation.FREE; // Temporary, remove later
+                _rotation[new Vector2I(x, y)] = 0;
+                _state[new Vector2I(x, y)] = TileOccupation.FREE; // Temporary, remove later
             }
         }
     }
@@ -84,6 +90,66 @@ public partial class ShipLayer : TileMapLayer
             }
         }
     }
+    
+    /// <summary>
+    /// Adds a ship of the specified size at the specified position and with
+    /// the specified rotation.
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="shipSize"></param>
+    /// <param name="rotation"></param>
+    public void AddShip(Vector2I pos, int shipSize, int rotation)
+    {
+        if (!CanPlace(pos, shipSize, rotation))
+        {
+            return;
+        }
+        SetCell(pos, SrcId, _tileAtlasCoords[shipSize], rotation);
+        for (int i = 0; i < shipSize; i++)
+        { 
+            var tilesToBlock = GetNeighbors(pos + _direction[rotation]); 
+            foreach (var t in tilesToBlock) 
+            { 
+                _state[t] = TileOccupation.BLOCKED;
+            }
+        } 
+        for (int i = 0; i < shipSize; i++) 
+        { 
+            _state[pos + _direction[rotation]] = TileOccupation.OCCUPIED;
+            // Store ship
+        }
+    }
+
+    /// <summary>
+    /// Returns true if a ship with the specified size and rotation can be
+    /// placed at the specified position.
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="shipSize"></param>
+    /// <param name="rotation"></param>
+    /// <returns></returns>
+    public bool CanPlace(Vector2I pos, int shipSize, int rotation)
+    {
+        var canPlace = true;
+        for (int i = 2; i < shipSize; i++)
+        {
+            if (_state[pos + i * _direction[rotation]] != TileOccupation.FREE)
+            {
+                return false;
+            }
+        }
+        // Currently doesn't work for ships with size 2, implement later
+        return canPlace;
+    }
+    
+    /// <summary>
+    /// Removes the ship at the specified position.
+    /// </summary>
+    /// <param name="pos"></param>
+    public void RemoveShip(Vector2I pos) 
+    {
+         // Implement later
+    }
 
     /// <summary>
     /// Rotates the ship at the specified position 90 degrees to the right.
@@ -92,12 +158,12 @@ public partial class ShipLayer : TileMapLayer
     public void RotateShip(Vector2I pos)
     {
         var atlasCoords = GetCellAtlasCoords(pos);
-        if (!_shipSizes.ContainsKey(atlasCoords))
+        if (!_tileAtlasCoords.ContainsKey(atlasCoords))
         {
             return;
         }
         var srcId = GetCellSourceId(pos);
-        var nextRotation = (_rotations[pos] + 1) % 4;
+        var nextRotation = (_rotation[pos] + 1) % 4;
         var rotation = 0;
         switch (nextRotation)
         {
@@ -114,14 +180,13 @@ public partial class ShipLayer : TileMapLayer
             case Rotate270: direction = new Vector2I(0, -1); break;
             default: throw new ArgumentException($"Invalid rotation: {rotation}.");
         }
-        if (!CheckRotationPossible(pos, _shipSizes[atlasCoords], rotation)) 
+        if (!CheckRotationPossible(pos, _tileAtlasCoords[atlasCoords], rotation)) 
         {
             return;
         }
-        _rotations[pos] = nextRotation;
+        _rotation[pos] = nextRotation;
         SetCell(pos, srcId, atlasCoords, rotation);
-        FreeTilesOnRotation(pos, _shipSizes[atlasCoords], rotation);
-        OccupyTilesOnRotation(pos, _shipSizes[atlasCoords], direction);
+        FreeTilesOnRotation(pos, _tileAtlasCoords[atlasCoords], rotation);
     }
     
     /// <summary>
@@ -154,19 +219,11 @@ public partial class ShipLayer : TileMapLayer
     /// <exception cref="ArgumentException"></exception>
     public void FreeTilesOnRotation(Vector2I pos, int shipSize, int rotation)
     {
-        Vector2I direction;
-        switch (rotation) 
-        {
-            case 0: direction = new Vector2I(0, -1); break;
-            case Rotate90: direction = new Vector2I(1, 0); break;
-            case Rotate180: direction = new Vector2I(0, 1); break;
-            case Rotate270: direction = new Vector2I(-1, 0); break;
-            default: throw new ArgumentException($"Invalid rotation: {rotation}.");
-        }
+        Vector2I direction = _direction[rotation];
         var perp = new Vector2I(direction.Y, direction.X);
         for (int i = 1; i < shipSize; i++)
         {
-            _states[pos + i * direction] = TileOccupation.FREE; // Occupied tiles
+            _state[pos + i * direction] = TileOccupation.FREE; // Occupied tiles
             
             TryFree(pos + (i + 1) * direction - perp); // Tiles beside the ship
             TryFree(pos + (i + i) * direction + perp);
@@ -181,31 +238,9 @@ public partial class ShipLayer : TileMapLayer
     /// <param name="pos"></param>
     public void TryFree(Vector2I pos)
     {
-        if (_states.ContainsKey(pos) && !IsBlocked(pos))
+        if (_state.ContainsKey(pos) && !IsBlocked(pos))
         {
-            _states[pos] = TileOccupation.FREE;
-        }
-    }
-
-    /// <summary>
-    /// Occupies and blocks new tiles when a ship is rotated.
-    /// </summary>
-    /// <param name="pos"></param>
-    /// <param name="shipSize"></param>
-    /// <param name="direction"></param>
-    public void OccupyTilesOnRotation(Vector2I pos, int shipSize, Vector2I direction)
-    {
-        for (int i = 0; i < shipSize; i++)
-        {
-            var tilesToBlock = GetNeighbors(pos + direction);
-            foreach (var t in tilesToBlock)
-            {
-                _states[t] = TileOccupation.BLOCKED;
-            }
-        }
-        for (int i = 0; i < shipSize; i++)
-        {
-            _states[pos + direction] = TileOccupation.OCCUPIED;
+            _state[pos] = TileOccupation.FREE;
         }
     }
     
@@ -219,7 +254,7 @@ public partial class ShipLayer : TileMapLayer
     {
         foreach (var n in GetNeighbors(pos))
         {
-            if (_states[n] == TileOccupation.OCCUPIED)
+            if (_state[n] == TileOccupation.OCCUPIED)
             {
                 return true;
             }
@@ -249,6 +284,43 @@ public partial class ShipLayer : TileMapLayer
             }
         }
         return neighbors;
+    }
+
+    /// <summary>
+    /// Returns the next rotation.
+    /// </summary>
+    /// <param name="rotation"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public int GetNextRotation(int rotation)
+    {
+        switch (rotation) 
+        {
+            case 0: return Rotate90; break;
+            case Rotate90: return Rotate180; break;
+            case Rotate180: return Rotate270; break;
+            case Rotate270: return 0; break;
+            default: throw new ArgumentException($"Invalid rotation: {rotation}.");
+        }
+    }
+    
+    /// <summary>
+    /// Returns the size of the ship represented by the tile at the specified
+    /// atlas coords.
+    /// </summary>
+    /// <param name="coords"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public int GetSizeByAtlasCoords(Vector2I coords) 
+    {
+        foreach (var ship in _tileAtlasCoords) 
+        {
+            if (coords == ship.Value)
+            {
+                return ship.Key;
+            }
+        }
+        throw new ArgumentException($"Invalid atlas coords: {coords}.");
     }
     
     /// <summary>
