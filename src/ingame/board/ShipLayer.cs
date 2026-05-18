@@ -105,13 +105,23 @@ public partial class ShipLayer : TileMapLayer
             case 2: rotation = Rotate180; break;
             case 3: rotation = Rotate270; break;
         }
+        Vector2I direction;
+        switch (rotation) 
+        {
+            case 0: direction = new Vector2I(1, 0); break;
+            case Rotate90: direction = new Vector2I(0, 1); break;
+            case Rotate180: direction = new Vector2I(-1, 0); break;
+            case Rotate270: direction = new Vector2I(0, -1); break;
+            default: throw new ArgumentException($"Invalid rotation: {rotation}.");
+        }
         if (!CheckRotationPossible(pos, _shipSizes[atlasCoords], rotation)) 
         {
             return;
         }
         _rotations[pos] = nextRotation;
         SetCell(pos, srcId, atlasCoords, rotation);
-        UpdateTileData(pos, _shipSizes[atlasCoords], rotation);
+        FreeTilesOnRotation(pos, _shipSizes[atlasCoords], rotation);
+        OccupyTilesOnRotation(pos, _shipSizes[atlasCoords], direction);
     }
     
     /// <summary>
@@ -132,18 +142,6 @@ public partial class ShipLayer : TileMapLayer
             case Rotate270: possible = pos.Y + 1 >= shipSize; break;
         }
         return possible;
-    }
-
-    /// <summary>
-    /// Updates occupied and blocked tiles when a ship is rotated.
-    /// </summary>
-    /// <param name="pos"></param>
-    /// <param name="shipSize"></param>
-    /// <param name="rotation"></param>
-    public void UpdateTileData(Vector2I pos, int shipSize, int rotation)
-    {
-        FreeTilesOnRotation(pos, shipSize, rotation);
-        OccupyTilesOnRotation(pos, shipSize, rotation);
     }
 
     /// <summary>
@@ -188,25 +186,15 @@ public partial class ShipLayer : TileMapLayer
             _states[pos] = TileOccupation.FREE;
         }
     }
-    
+
     /// <summary>
     /// Occupies and blocks new tiles when a ship is rotated.
     /// </summary>
     /// <param name="pos"></param>
     /// <param name="shipSize"></param>
-    /// <param name="rotation"></param>
-    /// <exception cref="ArgumentException"></exception>
-    public void OccupyTilesOnRotation(Vector2I pos, int shipSize, int rotation)
+    /// <param name="direction"></param>
+    public void OccupyTilesOnRotation(Vector2I pos, int shipSize, Vector2I direction)
     {
-        Vector2I direction;
-        switch (rotation) 
-        {
-            case 0: direction = new Vector2I(1, 0); break;
-            case Rotate90: direction = new Vector2I(0, 1); break;
-            case Rotate180: direction = new Vector2I(-1, 0); break;
-            case Rotate270: direction = new Vector2I(0, -1); break;
-            default: throw new ArgumentException($"Invalid rotation: {rotation}.");
-        }
         for (int i = 0; i < shipSize; i++)
         {
             var tilesToBlock = GetNeighbors(pos + direction);
