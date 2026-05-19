@@ -51,8 +51,9 @@ public partial class ShipLayer : TileMapLayer
     private const int BoardSizeY = 12;
 
     private Dictionary<int, Vector2I> _tileAtlasCoords;
-    private readonly Dictionary<Guid, Dictionary<Vector2I, List<Vector2I>>> _ships = new();
-    private readonly Dictionary<Guid, int> _rotation = new();
+    private readonly Dictionary<Guid, Vector2I> _shipOrigin = new();
+    private readonly Dictionary<Vector2I, List<Vector2I>> _shipTiles = new();
+    private readonly Dictionary<Vector2I, int> _rotation = new();
     private readonly Dictionary<Vector2I, TileOccupation> _state = new();
 
     /// <summary>
