@@ -1,7 +1,6 @@
 using System;
 using Godot;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace GodotClient.Ingame.Boards;
 
@@ -14,6 +13,17 @@ public enum TileOccupation
     FREE,
     OCCUPIED,
     BLOCKED
+}
+
+/// <summary>
+/// Stores all relevant data of a ship.
+/// </summary>
+public class Ship
+{
+    public Guid ShipId;
+    public Vector2I Origin;
+    public List<Vector2I> Tiles;
+    public int Rotation;
 }
 
 /// <summary>
@@ -41,8 +51,8 @@ public partial class ShipLayer : TileMapLayer
     private const int BoardSizeY = 12;
 
     private Dictionary<int, Vector2I> _tileAtlasCoords;
-    private readonly Dictionary<Guid, > _position = new();
-    private readonly Dictionary<Vector2I, int> _rotation = new();
+    private readonly Dictionary<Guid, Dictionary<Vector2I, List<Vector2I>>> _ships = new();
+    private readonly Dictionary<Guid, int> _rotation = new();
     private readonly Dictionary<Vector2I, TileOccupation> _state = new();
 
     /// <summary>
@@ -65,14 +75,6 @@ public partial class ShipLayer : TileMapLayer
                 _state[new Vector2I(x, y)] = TileOccupation.FREE; // Temporary, remove later
             }
         }
-    }
-
-    /// <summary>
-    /// Called every frame. 'delta' is the elapsed time since the previous frame.
-    /// </summary>
-    /// <param name="delta"></param>
-    public override void _Process(double delta)
-    {
     }
     
     /// <summary>
@@ -98,7 +100,8 @@ public partial class ShipLayer : TileMapLayer
     /// <param name="pos"></param>
     /// <param name="shipSize"></param>
     /// <param name="rotation"></param>
-    public void AddShip(Vector2I pos, int shipSize, int rotation)
+    /// <param name="shipId"></param>
+    public void AddShip(Vector2I pos, int shipSize, int rotation, Guid shipId)
     {
         if (!CanPlace(pos, shipSize, rotation))
         {
@@ -112,11 +115,12 @@ public partial class ShipLayer : TileMapLayer
             { 
                 _state[t] = TileOccupation.BLOCKED;
             }
-        } 
-        for (int i = 0; i < shipSize; i++) 
-        { 
-            _state[pos + _direction[rotation]] = TileOccupation.OCCUPIED;
-            // Store ship
+        }
+        for (int i = 0; i < shipSize; i++)
+        {
+            var shipPos = pos + _direction[rotation];
+            _state[shipPos] = TileOccupation.OCCUPIED;
+            _ships[shipPos] = (shipId, pos);
         }
     }
 
@@ -259,6 +263,44 @@ public partial class ShipLayer : TileMapLayer
                 return true;
             }
         }
+        return false;
+    }
+    
+    /// <summary>
+    /// Returns true or false depending on whether there exists a ship at the
+    /// specified position or not. If a ship exists at the position, the
+    /// output is its ID. The default output is an empty Guid.
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public bool TryGetId(Vector2I pos, out Guid id)
+    {
+        if (_ships.TryGetValue(pos, out var ship))
+        {
+            id = ship.Item1;
+            return true;
+        }
+        id = Guid.Empty;
+        return false;
+    }
+    
+    /// <summary>
+    /// Returns true or false depending on whether there exists a ship at the
+    /// specified position or not. If a ship exists at the position, the
+    /// output is the position of its origin. The default output is (-1, -1).
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="origin"></param>
+    /// <returns></returns>
+    public bool TryGetOrigin(Vector2I pos, out Vector2I origin)
+    {
+        if (_ships.TryGetValue(pos, out var ship))
+        {
+            origin = ship.Item2;
+            return true;
+        }
+        origin = new Vector2I(-1, -1);
         return false;
     }
 
