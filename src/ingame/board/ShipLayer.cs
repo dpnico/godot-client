@@ -16,29 +16,18 @@ public enum TileOccupation
 }
 
 /// <summary>
-/// Stores all relevant data of a ship.
-/// </summary>
-public class Ship
-{
-    public Guid ShipId;
-    public Vector2I Origin;
-    public int Size;
-    public Vector2I Direction;
-}
-
-/// <summary>
 /// The layer of the board that contains the ships.
 /// </summary>
 public partial class ShipLayer : TileMapLayer
 {
     // Tile atlas constants
     private const int SrcId = 1;
-    private readonly Vector2I _single = new Vector2I(3, 1);
-    private readonly Vector2I _double = new Vector2I(0, 2);
-    private readonly Vector2I _triple = new Vector2I(0, 1);
-    private readonly Vector2I _quad = new Vector2I(0, 0);
+    private readonly Vector2I _single = new(3, 1);
+    private readonly Vector2I _double = new(0, 2);
+    private readonly Vector2I _triple = new(0, 1);
+    private readonly Vector2I _quad = new(0, 0);
     // Rotations
-    private const int Rotate90 =(int)(TileSetAtlasSource.TransformTranspose | TileSetAtlasSource.TransformFlipH);
+    private const int Rotate90 = (int)(TileSetAtlasSource.TransformTranspose | TileSetAtlasSource.TransformFlipH);
     private const int Rotate180 = (int)(TileSetAtlasSource.TransformFlipH | TileSetAtlasSource.TransformFlipV);
     private const int Rotate270 = (int)(TileSetAtlasSource.TransformTranspose | TileSetAtlasSource.TransformFlipV);
     // Board dimensions
@@ -48,9 +37,55 @@ public partial class ShipLayer : TileMapLayer
     private readonly Dictionary<Guid, Ship> _ships = new();
     private readonly Dictionary<Vector2I, Vector2I> _shipTiles = new();
     private readonly Dictionary<Vector2I, TileOccupation> _state = new();
+    
+    /// <summary>
+    /// Called when the node enters the scene tree for the first time.
+    /// </summary>
+    public override void _Ready()
+    {
+        for (int x = 0; x < BoardSizeX; x++)
+        {
+            for (int y = 0; y < BoardSizeY; y++)
+            {
+                _state[new Vector2I(x, y)] = TileOccupation.FREE;
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Called when there is an input event. The input event propagates up
+    /// through the node tree until a node consumes it.
+    /// </summary>
+    /// <param name="event"></param>
+    public override void _Input(InputEvent @event) 
+    {
+        if (@event is InputEventKey keyEvent && keyEvent.Pressed) 
+        {
+            if (keyEvent.Keycode == Key.R)
+            {
+                RotateAllShips();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Initializes the ship layer with a starter configuration of ships.
+    /// </summary>
+    public void InitShips()
+    {
+        var ships = new StartShipConfig();
+        foreach (var s in ships) 
+        {
+            AddShip(s);
+        }
+    }
 
     public void AddShip(Ship ship)
     {
+        if (_ships.ContainsKey(ship.ShipId))
+        {
+            throw new ArgumentException($"A ship with the ID {ship.ShipId} is already registered.");
+        }
         var perp = new Vector2I(ship.Direction.Y, ship.Direction.X);
         for (int i =  -1; i <= ship.Size; i++) 
         {
@@ -65,6 +100,7 @@ public partial class ShipLayer : TileMapLayer
             _state[pos] = TileOccupation.OCCUPIED;
             _shipTiles[pos] = ship.Origin;
         }
+        SetCell(ship.Origin, SrcId, GetAtlasCoords(ship.Size), GetRotation(ship.Direction));
         _ships[ship.ShipId] = ship;
     }
     
@@ -105,15 +141,46 @@ public partial class ShipLayer : TileMapLayer
         {
             return;
         }
-        ship. = GetNextRotation(ship.Direction);
-        
+        ship.Rotate(1);
+        if (CanPlace(ship))
+        {
+            AddShip(ship);
+        }
+        else
+        {
+            ship.Rotate(-1);
+            AddShip(ship);
+        }
     }
     
-    /// <summary>
-    /// Frees the tile at the specified position if it is within the board and
-    /// not blocked by any remaining adjacent occupied tiles.
-    /// </summary>
-    /// <param name="pos"></param>
+    public bool CanPlace(Ship ship)
+    {
+        if (!FitsOnBoard(ship))
+        {
+            return false;
+        }
+        for (int i = 0; i < ship.Size; i++)
+        {
+            if (_state[ship.Origin + i * ship.Direction] != TileOccupation.FREE)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public bool FitsOnBoard(Ship ship)
+    {
+        switch (ship.Direction)
+        {
+            case (1, 0): return ship.Origin.X + ship.Size - 1 <= BoardSizeX - 1;
+            case (0, 1): return ship.Origin.Y + ship.Size - 1 <= BoardSizeY - 1;
+            case (-1, 0): return ship.Origin.X + 1 >= ship.Size;
+            case (0, -1): return ship.Origin.Y + 1 >= ship.Size; 
+            default: throw new ArgumentException($"Invalid direction: {ship.Size}.");
+        }
+    }
+    
     public void TryFree(Vector2I pos)
     {
         if (_state.ContainsKey(pos) && !IsBlocked(pos))
@@ -122,12 +189,6 @@ public partial class ShipLayer : TileMapLayer
         }
     }
     
-    /// <summary>
-    /// Returns true if the tile at the specified position is blocked from
-    /// occupation by an adjacent occupied tile and false if it is not.
-    /// </summary>
-    /// <param name="pos"></param>
-    /// <returns></returns>
     public bool IsBlocked(Vector2I pos) 
     {
         foreach (var n in GetNeighbors(pos))
@@ -140,11 +201,6 @@ public partial class ShipLayer : TileMapLayer
         return false;
     }
     
-    /// <summary>
-    /// Returns all valid neighbors of the specified tile.
-    /// </summary>
-    /// <param name="pos"></param>
-    /// <returns></returns>
     public List<Vector2I> GetNeighbors(Vector2I pos)
     {
         var neighbors = new List<Vector2I>();
@@ -194,15 +250,26 @@ public partial class ShipLayer : TileMapLayer
         }
     }
     
-    public int GetNextRotation(Vector2I direction) 
+    public Vector2I GetAtlasCoords(int shipSize) 
     {
-        switch (direction)
+        switch (shipSize) 
         {
-            case (1, 0): return Rotate90;
-            case (0, 1): return Rotate180;
-            case (-1, 0): return Rotate270;
-            case (0, -1): return 0;
-            default: throw new ArgumentException($"{direction} is not a valid direction.");
+            case 1: return _single;
+            case 2: return _double;
+            case 3: return _triple;
+            case 4: return _quad;
+            default: throw new ArgumentException($"Invalid ship size: {shipSize}.");
+        }
+    }
+    
+    /// <summary>
+    /// For debugging purposes. Rotates all ships when 'R' is pressed.
+    /// </summary>
+    public void RotateAllShips() 
+    {
+        foreach (var s in _ships) 
+        {
+            RotateShipAt(s.Value.Origin);
         }
     }
 }

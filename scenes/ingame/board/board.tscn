@@ -29,6 +29,6 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAA
 tile_set = SubResource("TileSet_mg4yg")
 
 [node name="Ships" parent="." unique_id=40581594 instance=ExtResource("3_u1b6i")]
-tile_map_data = PackedByteArray("AAAAAAAAAQAAAAAAAAAAAAEAAQAAAAEAAAAAAAIAAQAAAAEAAAAAAAMAAQAAAAIAAAAAAAQAAQAAAAIAAAAAAAUAAQAAAAIAAAAAAAYAAQADAAEAAAAAAAcAAQADAAEAAAAAAAgAAQADAAEAAAAAAAkAAQADAAEAAAA=")
+tile_map_data = PackedByteArray()
 
 [node name="Markers" parent="." unique_id=1249985672 instance=ExtResource("4_k2mnc")]

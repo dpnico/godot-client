@@ -1,4 +1,4 @@
-[gd_scene format=4 uid="uid://bi3on32fusa1i"]
+[gd_scene format=3 uid="uid://bi3on32fusa1i"]
 
 [ext_resource type="Texture2D" uid="uid://7t2er2cjqs8p" path="res://resources/textures/board/ships.png" id="1_bu6ig"]
 [ext_resource type="Script" uid="uid://d132js7ex2ql4" path="res://src/ingame/board/ShipLayer.cs" id="2_7g6g0"]
@@ -26,6 +26,5 @@ custom_data_layer_1/type = 1
 sources/1 = SubResource("TileSetAtlasSource_x0lrp")
 
 [node name="Ships" type="TileMapLayer" unique_id=40581594]
-tile_map_data = PackedByteArray("AAAAAAAAAQAAAAAAAAAAAAEAAQAAAAEAAAAAAAIAAQAAAAIAAAAAAAMAAQADAAEAAAAFAAAAAQAAAAAAAAAGAAEAAQAAAAEAAAAHAAIAAQAAAAIAAAAIAAMAAQADAAEAAAAEAAgAAQAAAAAAAFAIAAoAAQAAAAAAAAAFAAkAAQAAAAEAAAACAAoAAQAAAAIAAAAAAAsAAQAAAAIAAAAIAAYAAQADAAEAAAACAAYAAQADAAEAAAAAAAgAAQADAAEAAAA=")
 tile_set = SubResource("TileSet_ob2rw")
 script = ExtResource("2_7g6g0")
