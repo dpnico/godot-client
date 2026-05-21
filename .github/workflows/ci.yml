@@ -44,11 +44,12 @@ jobs:
           godot-version: '4.6.2'
           paths: 'res://test'
           godot-net: true
-          
+          report-name: 'coverage.xml'
+      
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
-          filename: test-report.xml
+          filename: /**/coverage.xml
           badge: true
           fail_below_min: true
           format: markdown
