@@ -45,6 +45,9 @@ jobs:
           paths: 'res://test'
           godot-net: true
           report-name: 'coverage.xml'
+          
+      - name: Debug
+        run: find . -name "coverage.xml"
       
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
