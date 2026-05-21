@@ -5,7 +5,7 @@ using GodotClient.PopUps;
 using GodotClient.Test.Testing;
 using static GdUnit4.Assertions;
 
-namespace GodotClient.Test.PopUps;
+namespace GodotClient.Test;
 
 [TestSuite]
 [RequireGodotRuntime]

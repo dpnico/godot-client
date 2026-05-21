@@ -8,7 +8,7 @@ namespace GodotClient.Ingame.Boards;
 /// An enum that represents whether a tile is free, occupied by a ship or
 /// blocked from occupation by an adjacent occupied tile.
 /// </summary>
-public enum TileOccupation 
+public enum TileOccupation
 {
     FREE,
     OCCUPIED,
@@ -31,13 +31,13 @@ public partial class ShipLayer : TileMapLayer
     private const int Rotate180 = (int)(TileSetAtlasSource.TransformFlipH | TileSetAtlasSource.TransformFlipV);
     private const int Rotate270 = (int)(TileSetAtlasSource.TransformTranspose | TileSetAtlasSource.TransformFlipV);
     // Board dimensions
-    private const int BoardSizeX = 12; 
+    private const int BoardSizeX = 12;
     private const int BoardSizeY = 12;
 
     private readonly Dictionary<Guid, Ship> _ships = new();
     private readonly Dictionary<Vector2I, Vector2I> _shipTiles = new();
     private readonly Dictionary<Vector2I, TileOccupation> _state = new();
-    
+
     /// <summary>
     /// Called when the node enters the scene tree for the first time.
     /// </summary>
@@ -51,15 +51,15 @@ public partial class ShipLayer : TileMapLayer
             }
         }
     }
-    
+
     /// <summary>
     /// Called when there is an input event. The input event propagates up
     /// through the node tree until a node consumes it.
     /// </summary>
     /// <param name="event"></param>
-    public override void _Input(InputEvent @event) 
+    public override void _Input(InputEvent @event)
     {
-        if (@event is InputEventKey keyEvent && keyEvent.Pressed) 
+        if (@event is InputEventKey keyEvent && keyEvent.Pressed)
         {
             if (keyEvent.Keycode == Key.R)
             {
@@ -74,7 +74,7 @@ public partial class ShipLayer : TileMapLayer
     public void InitShips()
     {
         var ships = new StartShipConfig();
-        foreach (var s in ships) 
+        foreach (var s in ships)
         {
             AddShip(s);
         }
@@ -87,7 +87,7 @@ public partial class ShipLayer : TileMapLayer
             throw new ArgumentException($"A ship with the ID {ship.ShipId} is already registered.");
         }
         var perp = new Vector2I(ship.Direction.Y, ship.Direction.X);
-        for (int i =  -1; i <= ship.Size; i++) 
+        for (int i = -1; i <= ship.Size; i++)
         {
             for (int j = -1; j <= 1; j++)
             {
@@ -103,8 +103,8 @@ public partial class ShipLayer : TileMapLayer
         SetCell(ship.Origin, SrcId, GetAtlasCoords(ship.Size), GetRotation(ship.Direction));
         _ships[ship.ShipId] = ship;
     }
-    
-    public Ship RemoveShip(Guid shipId) 
+
+    public Ship RemoveShip(Guid shipId)
     {
         if (!_ships.ContainsKey(shipId))
         {
@@ -152,7 +152,7 @@ public partial class ShipLayer : TileMapLayer
             AddShip(ship);
         }
     }
-    
+
     public bool CanPlace(Ship ship)
     {
         if (!FitsOnBoard(ship))
@@ -168,7 +168,7 @@ public partial class ShipLayer : TileMapLayer
         }
         return true;
     }
-    
+
     public bool FitsOnBoard(Ship ship)
     {
         switch (ship.Direction)
@@ -176,11 +176,11 @@ public partial class ShipLayer : TileMapLayer
             case (1, 0): return ship.Origin.X + ship.Size - 1 <= BoardSizeX - 1;
             case (0, 1): return ship.Origin.Y + ship.Size - 1 <= BoardSizeY - 1;
             case (-1, 0): return ship.Origin.X + 1 >= ship.Size;
-            case (0, -1): return ship.Origin.Y + 1 >= ship.Size; 
+            case (0, -1): return ship.Origin.Y + 1 >= ship.Size;
             default: throw new ArgumentException($"Invalid direction: {ship.Size}.");
         }
     }
-    
+
     public void TryFree(Vector2I pos)
     {
         if (_state.ContainsKey(pos) && !IsBlocked(pos))
@@ -188,8 +188,8 @@ public partial class ShipLayer : TileMapLayer
             _state[pos] = TileOccupation.FREE;
         }
     }
-    
-    public bool IsBlocked(Vector2I pos) 
+
+    public bool IsBlocked(Vector2I pos)
     {
         foreach (var n in GetNeighbors(pos))
         {
@@ -200,7 +200,7 @@ public partial class ShipLayer : TileMapLayer
         }
         return false;
     }
-    
+
     public List<Vector2I> GetNeighbors(Vector2I pos)
     {
         var neighbors = new List<Vector2I>();
@@ -249,10 +249,10 @@ public partial class ShipLayer : TileMapLayer
             default: throw new ArgumentException($"{direction} is not a valid direction.");
         }
     }
-    
-    public Vector2I GetAtlasCoords(int shipSize) 
+
+    public Vector2I GetAtlasCoords(int shipSize)
     {
-        switch (shipSize) 
+        switch (shipSize)
         {
             case 1: return _single;
             case 2: return _double;
@@ -261,15 +261,42 @@ public partial class ShipLayer : TileMapLayer
             default: throw new ArgumentException($"Invalid ship size: {shipSize}.");
         }
     }
-    
+
     /// <summary>
     /// For debugging purposes. Rotates all ships when 'R' is pressed.
     /// </summary>
-    public void RotateAllShips() 
+    public void RotateAllShips()
     {
-        foreach (var s in _ships) 
+        foreach (var s in _ships)
         {
             RotateShipAt(s.Value.Origin);
         }
+    }
+
+    /// <summary>
+    /// Returns the dictionary of ships.
+    /// </summary>
+    /// <returns></returns>
+    public Dictionary<Guid, Ship> GetShips()
+    {
+        return _ships;
+    }
+
+    /// <summary>
+    /// Returns the dictionary of ship tiles.
+    /// </summary>
+    /// <returns></returns>
+    public Dictionary<Vector2I, Vector2I> GetShipTiles()
+    {
+        return _shipTiles;
+    }
+
+    /// <summary>
+    /// Returns the dictionary of board tile states.
+    /// </summary>
+    /// <returns></returns>
+    public Dictionary<Vector2I, TileOccupation> GetState()
+    {
+        return _state;
     }
 }

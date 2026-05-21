@@ -5,7 +5,7 @@ using GodotClient.PopUps;
 using GodotClient.Test.Testing;
 using static GdUnit4.Assertions;
 
-namespace GodotClient.Test.PopUps;
+namespace GodotClient.Test;
 
 [TestSuite]
 [RequireGodotRuntime]
@@ -14,8 +14,8 @@ public class PopUpTests
     private readonly PackedScene _testScene = GD.Load<PackedScene>("res://scenes/test/test.tscn");
     private TestScene _scene;
 
-    private static readonly string SingleButtonPopUpPath = "res://scenes/pop_up/single_button_pop_up.tscn";
-    private static readonly string DualButtonPopUpPath = "res://scenes/pop_up/dual_button_pop_up.tscn";
+    private const string SingleButtonPopUpPath = "res://scenes/pop_up/single_button_pop_up.tscn";
+    private const string DualButtonPopUpPath = "res://scenes/pop_up/dual_button_pop_up.tscn";
     private readonly PackedScene _singleButtonPopUpScene = GD.Load<PackedScene>(SingleButtonPopUpPath);
     private readonly PackedScene _dualButtonPopUpScene = GD.Load<PackedScene>(DualButtonPopUpPath);
     private PopUp _singleButtonPopUp;

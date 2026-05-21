@@ -10,7 +10,7 @@ namespace GodotClient.Ingame.Boards;
 public class Ship
 {
     public Guid ShipId { get; set; } = Guid.NewGuid();
-    public Vector2I Origin { get; set;}
+    public Vector2I Origin { get; set; }
     public int Size { get; set; }
     public Vector2I Direction { get; set; } = new Vector2I(1, 0);
 
