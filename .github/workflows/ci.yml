@@ -45,6 +45,7 @@ jobs:
           paths: 'res://test'
           godot-net: true
           report-name: 'coverage.xml'
+          arguments: -coverage
           
       - name: Debug
         run: find . -name "coverage.xml"
