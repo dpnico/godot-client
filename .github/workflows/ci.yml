@@ -49,6 +49,12 @@ jobs:
           
       - name: Make Coverage Directory
         run: mkdir -p coverage
+        
+      - name: Download Coverage Report
+        uses: actions/download-artifact@v8
+          with:
+            name: coverage.xml
+            path: ./coverage/
       
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
