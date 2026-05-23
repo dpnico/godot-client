@@ -59,7 +59,7 @@ public class ShipLayerTests
     public void RemoveShip()
     {
         SetUp();
-        
+
         Vector2I pos = new(1, 6);
         Ship ship = new()
         {
