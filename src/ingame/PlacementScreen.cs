@@ -5,14 +5,17 @@ using GodotClient.Ingame.Boards;
 
 namespace GodotClient.Ingame;
 
-public partial class SetupScreen : Control
+public partial class PlacementScreen : Control
 {
+	[Export] private Button _randomButton;
+	[Export] private Button _readyButton;
 	[Export] private Board _shipPreview;
 	[Export] private Board _shipPlacement;
 	[Export] private Sprite2D _dragAndDropPreview;
 	
 	private (Board, Vector2I) _dragOrigin;
 	private Ship _shipBeingDragged;
+	private Vector2I? _dragOffset;
 	
 	/// <summary>
 	/// Called when the node enters the scene tree for the first time.
@@ -108,15 +111,21 @@ public partial class SetupScreen : Control
 		board.RemoveShip(ship.ShipId);
 		_dragOrigin = (board, ship.Origin);
 		_shipBeingDragged = ship;
+		_dragOffset = BoardUtil.GetOffsetFromOrigin(ship.Origin, pos);
 		// Show ship preview while dragging
 	}
 
 	public void TryDrop(Board board, Vector2I pos)
 	{
+		if (_shipBeingDragged == null)
+		{
+			return;
+		}
+		var offset = _dragOffset.HasValue ? _dragOffset.Value : new Vector2I(0, 0);
 		Ship shipAtNewOrigin = new()
 		{
 			ShipId = _shipBeingDragged.ShipId,
-			Origin = pos,
+			Origin = pos - offset,
 			Size = _shipBeingDragged.Size,
 			Direction = _shipBeingDragged.Direction
 		};
@@ -129,5 +138,6 @@ public partial class SetupScreen : Control
 			_dragOrigin.Item1.AddShip(_shipBeingDragged);
 		}
 		_shipBeingDragged = null;
+		_dragOffset = null;
 	}
 }

@@ -2,17 +2,51 @@
 
 [ext_resource type="Script" uid="uid://darq6f5h6lrnl" path="res://src/ingame/board/Board.cs" id="1_ff2oy"]
 [ext_resource type="Texture2D" uid="uid://bsv2cb4rq467q" path="res://resources/textures/board/tile.png" id="2_ndr1i"]
-[ext_resource type="PackedScene" uid="uid://bi3on32fusa1i" path="res://scenes/ingame/board/ship_layer.tscn" id="3_u1b6i"]
-[ext_resource type="PackedScene" uid="uid://10nvo52pjl8i" path="res://scenes/ingame/board/marker_layer.tscn" id="4_k2mnc"]
+[ext_resource type="Texture2D" uid="uid://7t2er2cjqs8p" path="res://resources/textures/board/ships.png" id="3_k2mnc"]
+[ext_resource type="Texture2D" uid="uid://bfng74yjvkpxg" path="res://resources/textures/board/hit.png" id="4_rrthd"]
+[ext_resource type="Texture2D" uid="uid://0jbhlj11jxna" path="res://resources/textures/board/miss.png" id="5_8wobj"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dijhe"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_k2mnc"]
 texture = ExtResource("2_ndr1i")
 texture_region_size = Vector2i(64, 64)
 0:0/0 = 0
 
+[sub_resource type="TileSet" id="TileSet_rrthd"]
+tile_size = Vector2i(64, 64)
+sources/0 = SubResource("TileSetAtlasSource_k2mnc")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_a5y26"]
+texture = ExtResource("3_k2mnc")
+texture_region_size = Vector2i(64, 64)
+3:1/0 = 0
+0:0/size_in_atlas = Vector2i(4, 1)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(-96, 0)
+0:1/size_in_atlas = Vector2i(3, 1)
+0:1/0 = 0
+0:1/0/texture_origin = Vector2i(-64, 0)
+0:2/size_in_atlas = Vector2i(2, 1)
+0:2/0 = 0
+0:2/0/texture_origin = Vector2i(-32, 0)
+
 [sub_resource type="TileSet" id="TileSet_mg4yg"]
 tile_size = Vector2i(64, 64)
-sources/0 = SubResource("TileSetAtlasSource_dijhe")
+sources/1 = SubResource("TileSetAtlasSource_a5y26")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_07axc"]
+texture = ExtResource("4_rrthd")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_f3j2v"]
+texture = ExtResource("5_8wobj")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_pl013"]
+tile_size = Vector2i(64, 64)
+sources/2 = SubResource("TileSetAtlasSource_07axc")
+sources/3 = SubResource("TileSetAtlasSource_f3j2v")
 
 [node name="Board" type="Control" unique_id=867204651 node_paths=PackedStringArray("_grid", "_shipLayer", "_markerLayer")]
 custom_minimum_size = Vector2(768, 768)
@@ -26,10 +60,12 @@ _grid = NodePath("Grid")
 _shipLayer = NodePath("Ships")
 _markerLayer = NodePath("Markers")
 
-[node name="Grid" type="TileMapLayer" parent="." unique_id=1234494890]
+[node name="Grid" type="TileMapLayer" parent="." unique_id=118678006]
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAAsAAAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAQAAAAAAAAAAAABAAUAAAAAAAAAAAABAAYAAAAAAAAAAAABAAcAAAAAAAAAAAABAAgAAAAAAAAAAAABAAkAAAAAAAAAAAABAAoAAAAAAAAAAAABAAsAAAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAACAAIAAAAAAAAAAAACAAMAAAAAAAAAAAACAAQAAAAAAAAAAAACAAUAAAAAAAAAAAACAAYAAAAAAAAAAAACAAcAAAAAAAAAAAACAAgAAAAAAAAAAAACAAkAAAAAAAAAAAACAAoAAAAAAAAAAAACAAsAAAAAAAAAAAADAAAAAAAAAAAAAAADAAEAAAAAAAAAAAADAAIAAAAAAAAAAAADAAMAAAAAAAAAAAADAAQAAAAAAAAAAAADAAUAAAAAAAAAAAADAAYAAAAAAAAAAAADAAcAAAAAAAAAAAADAAgAAAAAAAAAAAADAAkAAAAAAAAAAAADAAoAAAAAAAAAAAADAAsAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAMAAAAAAAAAAAAEAAQAAAAAAAAAAAAEAAUAAAAAAAAAAAAEAAYAAAAAAAAAAAAEAAcAAAAAAAAAAAAEAAgAAAAAAAAAAAAEAAkAAAAAAAAAAAAEAAoAAAAAAAAAAAAEAAsAAAAAAAAAAAAFAAAAAAAAAAAAAAAFAAEAAAAAAAAAAAAFAAIAAAAAAAAAAAAFAAMAAAAAAAAAAAAFAAQAAAAAAAAAAAAFAAUAAAAAAAAAAAAFAAYAAAAAAAAAAAAFAAcAAAAAAAAAAAAFAAgAAAAAAAAAAAAFAAkAAAAAAAAAAAAFAAoAAAAAAAAAAAAFAAsAAAAAAAAAAAAGAAAAAAAAAAAAAAAGAAEAAAAAAAAAAAAGAAIAAAAAAAAAAAAGAAMAAAAAAAAAAAAGAAQAAAAAAAAAAAAGAAUAAAAAAAAAAAAGAAYAAAAAAAAAAAAGAAcAAAAAAAAAAAAGAAgAAAAAAAAAAAAGAAkAAAAAAAAAAAAGAAoAAAAAAAAAAAAGAAsAAAAAAAAAAAAHAAAAAAAAAAAAAAAHAAEAAAAAAAAAAAAHAAIAAAAAAAAAAAAHAAMAAAAAAAAAAAAHAAQAAAAAAAAAAAAHAAUAAAAAAAAAAAAHAAYAAAAAAAAAAAAHAAcAAAAAAAAAAAAHAAgAAAAAAAAAAAAHAAkAAAAAAAAAAAAHAAoAAAAAAAAAAAAHAAsAAAAAAAAAAAAIAAAAAAAAAAAAAAAIAAEAAAAAAAAAAAAIAAIAAAAAAAAAAAAIAAMAAAAAAAAAAAAIAAQAAAAAAAAAAAAIAAUAAAAAAAAAAAAIAAYAAAAAAAAAAAAIAAcAAAAAAAAAAAAIAAgAAAAAAAAAAAAIAAkAAAAAAAAAAAAIAAoAAAAAAAAAAAAIAAsAAAAAAAAAAAAJAAAAAAAAAAAAAAAJAAEAAAAAAAAAAAAJAAIAAAAAAAAAAAAJAAMAAAAAAAAAAAAJAAQAAAAAAAAAAAAJAAUAAAAAAAAAAAAJAAYAAAAAAAAAAAAJAAcAAAAAAAAAAAAJAAgAAAAAAAAAAAAJAAkAAAAAAAAAAAAJAAoAAAAAAAAAAAAJAAsAAAAAAAAAAAAKAAAAAAAAAAAAAAAKAAEAAAAAAAAAAAAKAAIAAAAAAAAAAAAKAAMAAAAAAAAAAAAKAAQAAAAAAAAAAAAKAAUAAAAAAAAAAAAKAAYAAAAAAAAAAAAKAAcAAAAAAAAAAAAKAAgAAAAAAAAAAAAKAAkAAAAAAAAAAAAKAAoAAAAAAAAAAAAKAAsAAAAAAAAAAAALAAAAAAAAAAAAAAALAAEAAAAAAAAAAAALAAIAAAAAAAAAAAALAAMAAAAAAAAAAAALAAQAAAAAAAAAAAALAAUAAAAAAAAAAAALAAYAAAAAAAAAAAALAAcAAAAAAAAAAAALAAgAAAAAAAAAAAALAAkAAAAAAAAAAAALAAoAAAAAAAAAAAALAAsAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_rrthd")
+
+[node name="Ships" type="TileMapLayer" parent="." unique_id=2125071951]
 tile_set = SubResource("TileSet_mg4yg")
 
-[node name="Ships" parent="." unique_id=40581594 instance=ExtResource("3_u1b6i")]
-
-[node name="Markers" parent="." unique_id=1249985672 instance=ExtResource("4_k2mnc")]
+[node name="Markers" type="TileMapLayer" parent="." unique_id=1038069376]
+tile_set = SubResource("TileSet_pl013")
