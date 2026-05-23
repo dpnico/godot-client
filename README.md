@@ -13,11 +13,14 @@
 
 ---
 ## 1. Description
-TBD
+This project focuses on the implementation of a client for the game **_Battleships_** in Godot.
 
 ---
 ## 2. Project Status
-TBD
+- Functional pop-up management
+- Board
+  - Ships can be added, removed and rotated (including proper validation for each action)
+  - Tests cover the most important functionalities, but more tests should be added
 
 ---
 ## 3. Core Functionalities
