@@ -61,10 +61,6 @@ public partial class ShipLayer : TileMapLayer
     {
         if (@event is InputEventKey keyEvent && keyEvent.Pressed)
         {
-            if (keyEvent.Keycode == Key.I)
-            {
-                InitShips();
-            }
             if (keyEvent.Keycode == Key.D)
             {
                 RemoveAllShips();
@@ -73,18 +69,6 @@ public partial class ShipLayer : TileMapLayer
             {
                 RotateAllShips();
             }
-        }
-    }
-
-    /// <summary>
-    /// Initializes the ship layer with a starter configuration of ships.
-    /// </summary>
-    public void InitShips()
-    {
-        var ships = new StartShipConfig();
-        foreach (var s in ships)
-        {
-            AddShip(s);
         }
     }
 
@@ -123,7 +107,6 @@ public partial class ShipLayer : TileMapLayer
 
     public Ship RemoveShipAt(Vector2I pos)
     {
-        GD.Print("RemoveShipAt is called.");
         if (!TryGetShipAt(pos, out Ship ship))
         {
             return null;
@@ -196,7 +179,6 @@ public partial class ShipLayer : TileMapLayer
 
     public void TryFree(Vector2I pos)
     {
-        GD.Print("TryFree is called.");
         if (_state.ContainsKey(pos) && !IsBlocked(pos))
         {
             _state[pos] = TileOccupation.FREE;
@@ -205,7 +187,6 @@ public partial class ShipLayer : TileMapLayer
 
     public bool IsBlocked(Vector2I pos)
     {
-        GD.Print("IsBlocked is called.");
         foreach (var n in GetNeighbors(pos))
         {
             if (_state[n] == TileOccupation.OCCUPIED)
@@ -251,17 +232,6 @@ public partial class ShipLayer : TileMapLayer
             }
         }
         throw new ArgumentException($"Inconsistent data: A ship is registered at {pos}, but is not mapped to an origin.");
-    }
-    
-    public bool TryGetOrigin(Vector2I pos, out Vector2I origin) 
-    {
-        if (_shipTiles.ContainsKey(pos)) 
-        {
-            origin = _shipTiles[pos];
-            return true;
-        }
-        origin = new Vector2I(-1, -1);
-        return false;
     }
 
     public int GetRotation(Vector2I direction)

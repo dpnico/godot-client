@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 namespace GodotClient.Ingame.Boards;
@@ -27,6 +28,18 @@ public partial class Board : Control
     public override void _Process(double delta)
     {
     }
+    
+    /// <summary>
+    /// Initializes the ship layer with a starter configuration of ships.
+    /// </summary>
+    public void InitShips()
+    {
+        var ships = new StartShipConfig();
+        foreach (var s in ships)
+        {
+            _shipLayer.AddShip(s);
+        }
+    }
 
     /// <summary>
     /// Returns the map coordinates of the cell containing the given
@@ -38,25 +51,36 @@ public partial class Board : Control
     /// <returns></returns>
     public Vector2I LocalToMap(Vector2 pos)
     {
-        return _grid.LocalToMap(pos);
+        return _grid.LocalToMap(_grid.ToLocal(pos));
+    }
+    
+    public void AddShip(Ship ship) 
+    {
+        _shipLayer.AddShip(ship);
+    }
+
+    public void RemoveShip(Guid id)
+    {
+        _shipLayer.RemoveShip(id);
+    }
+    
+    public void RotateShipAt(Vector2I pos) 
+    {
+        _shipLayer.RotateShipAt(pos);
+    }
+    
+    public bool CanPlaceShip(Ship ship) 
+    {
+        return _shipLayer.CanPlace(ship);
     }
     
     public bool TryGetShipAt(Vector2I pos, out Ship ship)
     {
         return _shipLayer.TryGetShipAt(pos, out ship);
     }
-
-    public bool TryGetOrigin(Vector2I pos, out Vector2I origin)
+    
+    public void SetTransparent()
     {
-        return _shipLayer.TryGetOrigin(pos, out origin);
-    }
-
-    /// <summary>
-    /// Applies the specified color as modulate of the grid layer.
-    /// </summary>
-    /// <param name="color"></param>
-    public void SetGridModulate(Color color)
-    {
-        _grid.SetModulate(color);
+        _grid.SetModulate(_opacity30);
     }
 }

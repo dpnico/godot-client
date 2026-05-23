@@ -9,15 +9,18 @@ public partial class SetupScreen : Control
 {
 	[Export] private Board _shipPreview;
 	[Export] private Board _shipPlacement;
+	[Export] private Sprite2D _dragAndDropPreview;
 	
 	private (Board, Vector2I) _dragOrigin;
-	private (Board, Vector2I) _dragDest;
+	private Ship _shipBeingDragged;
 	
 	/// <summary>
 	/// Called when the node enters the scene tree for the first time.
 	/// </summary>
 	public override void _Ready()
 	{
+		_shipPreview.SetTransparent();
+		_shipPreview.InitShips();
 	}
 
 	/// <summary>
@@ -35,18 +38,24 @@ public partial class SetupScreen : Control
 	/// <param name="event"></param>
 	public override void _Input(InputEvent @event) 
 	{
-		if (@event is InputEventMouseButton mbEvent && mbEvent.ButtonIndex == MouseButton.Left)
+		if (@event is InputEventMouseButton mbEvent)
 		{
 			var previewPos = _shipPreview.LocalToMap(GetGlobalMousePosition());
 			var placementPos = _shipPlacement.LocalToMap(GetGlobalMousePosition());
-			
-			if (mbEvent.Pressed)
+			if (mbEvent.ButtonIndex == MouseButton.Left)
 			{
-				HandleLeftMouseButtonPress(previewPos, placementPos);
+				if (mbEvent.Pressed)
+				{
+					HandleLeftMouseButtonPress(previewPos, placementPos);
+				}
+				else
+				{
+					HandleLeftMouseButtonRelease(previewPos, placementPos);
+				}
 			}
-			else
+			if (mbEvent.ButtonIndex == MouseButton.Right && mbEvent.Pressed)
 			{
-				HandleLeftMouseButtonRelease(previewPos, placementPos);
+				HandleRightMouseButtonPress(previewPos, placementPos);
 			}
 		}
 	}
@@ -63,16 +72,6 @@ public partial class SetupScreen : Control
 			StartDragAction(_shipPlacement, placementPos);
 		}
 	}
-
-	public void StartDragAction(Board board, Vector2I pos)
-	{
-		if (!board.TryGetOrigin(pos, out var shipOrigin))
-		{
-			return;
-		}
-		_dragOrigin = (board, shipOrigin);
-		// Continue
-	}
 	
 	public void HandleLeftMouseButtonRelease(Vector2I previewPos, Vector2I placementPos)
 	{
@@ -86,10 +85,49 @@ public partial class SetupScreen : Control
 			TryDrop(_shipPlacement, placementPos);
 		}
 	}
+	
+	public void HandleRightMouseButtonPress(Vector2I previewPos, Vector2I placementPos)
+	{
+		if (BoardUtil.IsWithinBounds(previewPos))
+		{
+			_shipPreview.RotateShipAt(previewPos);
+			return;
+		}
+		if (BoardUtil.IsWithinBounds(placementPos))
+		{
+			_shipPlacement.RotateShipAt(placementPos);
+		}
+	}
+
+	public void StartDragAction(Board board, Vector2I pos)
+	{
+		if (!board.TryGetShipAt(pos, out var ship))
+		{
+			return;
+		}
+		board.RemoveShip(ship.ShipId);
+		_dragOrigin = (board, ship.Origin);
+		_shipBeingDragged = ship;
+		// Show ship preview while dragging
+	}
 
 	public void TryDrop(Board board, Vector2I pos)
 	{
-		// Check if ship can be placed at release position
-		// If true, remove from origin, then add at new position
+		Ship shipAtNewOrigin = new()
+		{
+			ShipId = _shipBeingDragged.ShipId,
+			Origin = pos,
+			Size = _shipBeingDragged.Size,
+			Direction = _shipBeingDragged.Direction
+		};
+		if (board.CanPlaceShip(shipAtNewOrigin))
+		{
+            board.AddShip(shipAtNewOrigin);
+		}
+		else
+		{
+			_dragOrigin.Item1.AddShip(_shipBeingDragged);
+		}
+		_shipBeingDragged = null;
 	}
 }
