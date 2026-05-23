@@ -37,7 +37,7 @@ public partial class ShipLayer : TileMapLayer
     private readonly Dictionary<Guid, Ship> _ships = new();
     private readonly Dictionary<Vector2I, Vector2I> _shipTiles = new();
     private readonly Dictionary<Vector2I, TileOccupation> _state = new();
-    
+
     public bool Debug = false;
 
     /// <summary>
