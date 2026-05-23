@@ -10,7 +10,7 @@ namespace GodotClient.Test;
 [RequireGodotRuntime]
 public class ShipLayerTests
 {
-    private readonly PackedScene _testScene = GD.Load<PackedScene>("res://scenes/test/test.tscn");
+    private ISceneRunner _runner;
     private TestScene _scene;
 
     private readonly PackedScene _shipLayerScene = GD.Load<PackedScene>("res://scenes/ingame/board/ship_layer.tscn");
@@ -29,7 +29,8 @@ public class ShipLayerTests
 
     public void SetUp()
     {
-        _scene = _testScene.Instantiate<TestScene>();
+        _runner = ISceneRunner.Load("res://scenes/test/test.tscn");
+        _scene = _runner.Scene() as TestScene;
 
         _shipLayer = _shipLayerScene.Instantiate<ShipLayer>();
         _scene.AddChild(_shipLayer);
@@ -159,6 +160,7 @@ public class ShipLayerTests
 
     public void TearDown()
     {
-        _scene.Dispose();
+        _runner.Dispose();
+        //_scene.Dispose();
     }
 }
