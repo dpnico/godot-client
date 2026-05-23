@@ -62,6 +62,7 @@ public class ShipLayerTests
         AssertThat(state[new Vector2I(0, 5)]).IsEqual(TileOccupation.BLOCKED);
         AssertThat(state[new Vector2I(3, 7)]).IsEqual(TileOccupation.BLOCKED);
         AssertThat(_shipLayer.GetCellAtlasCoords(pos)).IsEqual(_double);
+        AssertThat(_shipLayer.Debug).IsTrue();
 
         TearDown();
     }

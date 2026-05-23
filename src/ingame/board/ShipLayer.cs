@@ -37,18 +37,20 @@ public partial class ShipLayer : TileMapLayer
     private readonly Dictionary<Guid, Ship> _ships = new();
     private readonly Dictionary<Vector2I, Vector2I> _shipTiles = new();
     private readonly Dictionary<Vector2I, TileOccupation> _state = new();
+    
+    public bool Debug = false;
 
     /// <summary>
     /// Called when the node enters the scene tree for the first time.
     /// </summary>
     public override void _Ready()
     {
+        Debug = true;
         for (int x = 0; x < BoardSizeX; x++)
         {
             for (int y = 0; y < BoardSizeY; y++)
             {
                 _state[new Vector2I(x, y)] = TileOccupation.FREE;
-                GD.Print((_state.ContainsKey(new Vector2I(x, y))).ToString());
             }
         }
     }
