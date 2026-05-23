@@ -8,13 +8,13 @@ namespace GodotClient.Test;
 
 [TestSuite]
 [RequireGodotRuntime]
-public class ShipLayerTests
+public class BoardTests
 {
     private ISceneRunner _runner;
     private TestScene _scene;
 
-    private readonly PackedScene _shipLayerScene = GD.Load<PackedScene>("res://scenes/ingame/board/ship_layer.tscn");
-    private ShipLayer _shipLayer;
+    private readonly PackedScene _boardScene = GD.Load<PackedScene>("res://scenes/ingame/board/board.tscn");
+    private Board _board;
 
     // Tile atlas constants
     private const int SrcId = 1;
@@ -32,8 +32,8 @@ public class ShipLayerTests
         _runner = ISceneRunner.Load("res://scenes/test/test.tscn");
         _scene = _runner.Scene() as TestScene;
 
-        _shipLayer = _shipLayerScene.Instantiate<ShipLayer>();
-        _scene.AddChild(_shipLayer);
+        _board = _boardScene.Instantiate<Board>();
+        _scene.AddChild(_board);
     }
 
     [TestCase]
@@ -48,10 +48,11 @@ public class ShipLayerTests
             Size = 2
         };
         var id = ship.ShipId;
-        _shipLayer.AddShip(ship);
-        var ships = _shipLayer.GetShips();
-        var shipTiles = _shipLayer.GetShipTiles();
-        var state = _shipLayer.GetState();
+        _board.AddShip(ship);
+        var shipLayer = _board.GetShipLayer();
+        var ships = _board.GetShips();
+        var shipTiles = _board.GetShipTiles();
+        var state = _board.GetState();
 
         AssertThat(ships.Count).IsEqual(1);
         AssertThat(ships[id]).IsEqual(ship);
@@ -62,7 +63,7 @@ public class ShipLayerTests
         AssertThat(state[new Vector2I(2, 6)]).IsEqual(TileOccupation.OCCUPIED);
         AssertThat(state[new Vector2I(0, 5)]).IsEqual(TileOccupation.BLOCKED);
         AssertThat(state[new Vector2I(3, 7)]).IsEqual(TileOccupation.BLOCKED);
-        AssertThat(_shipLayer.GetCellAtlasCoords(pos)).IsEqual(_double);
+        AssertThat(shipLayer.GetCellAtlasCoords(pos)).IsEqual(_double);
 
         TearDown();
     }
@@ -79,11 +80,12 @@ public class ShipLayerTests
             Size = 2,
         };
         var id = ship.ShipId;
-        _shipLayer.AddShip(ship);
-        _shipLayer.RemoveShip(id);
-        var ships = _shipLayer.GetShips();
-        var shipTiles = _shipLayer.GetShipTiles();
-        var state = _shipLayer.GetState();
+        _board.AddShip(ship);
+        _board.RemoveShip(id);
+        var shipLayer = _board.GetShipLayer();
+        var ships = _board.GetShips();
+        var shipTiles = _board.GetShipTiles();
+        var state = _board.GetState();
 
         AssertThat(ships.Count).IsEqual(0);
         AssertThat(ships.ContainsKey(id)).IsFalse();
@@ -92,7 +94,7 @@ public class ShipLayerTests
         AssertThat(state[new Vector2I(2, 6)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(0, 5)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(3, 7)]).IsEqual(TileOccupation.FREE);
-        AssertThat(_shipLayer.GetCellSourceId(pos)).IsEqual(-1);
+        AssertThat(shipLayer.GetCellSourceId(pos)).IsEqual(-1);
 
         TearDown();
     }
@@ -109,11 +111,12 @@ public class ShipLayerTests
             Size = 2,
         };
         var id = ship.ShipId;
-        _shipLayer.AddShip(ship);
-        _shipLayer.RemoveShipAt(pos);
-        var ships = _shipLayer.GetShips();
-        var shipTiles = _shipLayer.GetShipTiles();
-        var state = _shipLayer.GetState();
+        _board.AddShip(ship);
+        _board.RemoveShipAt(pos);
+        var shipLayer = _board.GetShipLayer();
+        var ships = _board.GetShips();
+        var shipTiles = _board.GetShipTiles();
+        var state = _board.GetState();
 
         AssertThat(ships.Count).IsEqual(0);
         AssertThat(ships.ContainsKey(id)).IsFalse();
@@ -122,7 +125,7 @@ public class ShipLayerTests
         AssertThat(state[new Vector2I(2, 6)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(0, 5)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(3, 7)]).IsEqual(TileOccupation.FREE);
-        AssertThat(_shipLayer.GetCellSourceId(pos)).IsEqual(-1);
+        AssertThat(shipLayer.GetCellSourceId(pos)).IsEqual(-1);
 
         TearDown();
     }
@@ -139,11 +142,12 @@ public class ShipLayerTests
             Size = 2,
         };
         var id = ship.ShipId;
-        _shipLayer.AddShip(ship);
-        _shipLayer.RemoveShipAt(new Vector2I(2, 6));
-        var ships = _shipLayer.GetShips();
-        var shipTiles = _shipLayer.GetShipTiles();
-        var state = _shipLayer.GetState();
+        _board.AddShip(ship);
+        _board.RemoveShipAt(new Vector2I(2, 6));
+        var shipLayer = _board.GetShipLayer();
+        var ships = _board.GetShips();
+        var shipTiles = _board.GetShipTiles();
+        var state = _board.GetState();
 
         AssertThat(ships.Count).IsEqual(0);
         AssertThat(ships.ContainsKey(id)).IsFalse();
@@ -152,7 +156,7 @@ public class ShipLayerTests
         AssertThat(state[new Vector2I(2, 6)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(0, 5)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(3, 7)]).IsEqual(TileOccupation.FREE);
-        AssertThat(_shipLayer.GetCellSourceId(pos)).IsEqual(-1);
+        AssertThat(shipLayer.GetCellSourceId(pos)).IsEqual(-1);
 
         TearDown();
     }
@@ -195,11 +199,12 @@ public class ShipLayerTests
             Size = 2
         };
         var id = ship.ShipId;
-        _shipLayer.AddShip(ship);
-        _shipLayer.RotateShipAt(pos);
-        var ships = _shipLayer.GetShips();
-        var shipTiles = _shipLayer.GetShipTiles();
-        var state = _shipLayer.GetState();
+        _board.AddShip(ship);
+        _board.RotateShipAt(pos);
+        var shipLayer = _board.GetShipLayer();
+        var ships = _board.GetShips();
+        var shipTiles = _board.GetShipTiles();
+        var state = _board.GetState();
 
         AssertThat(ships.Count).IsEqual(1);
         AssertThat(ships[id]).IsEqual(ship);
@@ -213,8 +218,8 @@ public class ShipLayerTests
         AssertThat(state[new Vector2I(0, 5)]).IsEqual(TileOccupation.BLOCKED);
         AssertThat(state[new Vector2I(3, 7)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(2, 8)]).IsEqual(TileOccupation.BLOCKED);
-        AssertThat(_shipLayer.GetCellAtlasCoords(pos)).IsEqual(_double);
-        AssertThat(_shipLayer.GetCellAlternativeTile(pos)).IsEqual(Rotate90);
+        AssertThat(shipLayer.GetCellAtlasCoords(pos)).IsEqual(_double);
+        AssertThat(shipLayer.GetCellAlternativeTile(pos)).IsEqual(Rotate90);
 
         TearDown();
     }
@@ -231,11 +236,12 @@ public class ShipLayerTests
             Size = 2
         };
         var id = ship.ShipId;
-        _shipLayer.AddShip(ship);
-        _shipLayer.RotateShipAt(pos);
-        var ships = _shipLayer.GetShips();
-        var shipTiles = _shipLayer.GetShipTiles();
-        var state = _shipLayer.GetState();
+        _board.AddShip(ship);
+        _board.RotateShipAt(pos);
+        var shipLayer = _board.GetShipLayer();
+        var ships = _board.GetShips();
+        var shipTiles = _board.GetShipTiles();
+        var state = _board.GetState();
 
         AssertThat(ships.Count).IsEqual(1);
         AssertThat(ships[id]).IsEqual(ship);
@@ -246,8 +252,8 @@ public class ShipLayerTests
         AssertThat(state[pos]).IsEqual(TileOccupation.OCCUPIED);
         AssertThat(state[new Vector2I(2, 11)]).IsEqual(TileOccupation.OCCUPIED);
         AssertThat(state[new Vector2I(3, 10)]).IsEqual(TileOccupation.BLOCKED);
-        AssertThat(_shipLayer.GetCellAtlasCoords(pos)).IsEqual(_double);
-        AssertThat(_shipLayer.GetCellAlternativeTile(pos)).IsEqual(0);
+        AssertThat(shipLayer.GetCellAtlasCoords(pos)).IsEqual(_double);
+        AssertThat(shipLayer.GetCellAlternativeTile(pos)).IsEqual(0);
 
         TearDown();
     }

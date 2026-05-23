@@ -1,15 +1,21 @@
-[gd_scene format=3 uid="uid://cqbyv1424ub28"]
+[gd_scene format=3 uid="uid://xhay8xgrkgnw"]
 
-[ext_resource type="Texture2D" uid="uid://dg7g5xear8tqk" path="res://resources/textures/background/water.png" id="1_eiusg"]
-[ext_resource type="PackedScene" uid="uid://oraasfdeyboc" path="res://scenes/ingame/board/board.tscn" id="2_weujr"]
+[ext_resource type="Script" uid="uid://cwgaytpdpvy8k" path="res://src/ingame/PlacementScreen.cs" id="1_7jvvm"]
+[ext_resource type="Texture2D" uid="uid://dg7g5xear8tqk" path="res://resources/textures/background/water.png" id="2_5njmx"]
+[ext_resource type="PackedScene" uid="uid://oraasfdeyboc" path="res://scenes/ingame/board/board.tscn" id="3_2iw2v"]
 
-[node name="Setup" type="Control" unique_id=742025217]
+[node name="Placement" type="Control" unique_id=742025217 node_paths=PackedStringArray("_randomButton", "_readyButton", "_shipPreview", "_shipPlacement")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_7jvvm")
+_randomButton = NodePath("MarginContainer/HBoxContainer/Random")
+_readyButton = NodePath("MarginContainer/HBoxContainer/Ready")
+_shipPreview = NodePath("MarginContainer/ShipPreview")
+_shipPlacement = NodePath("MarginContainer/ShipPlacement")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=372604285]
 layout_mode = 1
@@ -18,7 +24,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_eiusg")
+texture = ExtResource("2_5njmx")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1716048849]
 layout_mode = 1
@@ -46,7 +52,7 @@ size_flags_vertical = 0
 theme_override_constants/separation = 35
 
 [node name="Random" type="Button" parent="MarginContainer/HBoxContainer" unique_id=2126463601]
-custom_minimum_size = Vector2(235, 106)
+custom_minimum_size = Vector2(206, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -54,19 +60,21 @@ theme_override_font_sizes/font_size = 30
 text = "Random"
 
 [node name="Ready" type="Button" parent="MarginContainer/HBoxContainer" unique_id=386012180]
-custom_minimum_size = Vector2(235, 106)
+custom_minimum_size = Vector2(206, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_font_sizes/font_size = 30
 text = "Ready"
 
-[node name="Ships" parent="MarginContainer" unique_id=914390148 instance=ExtResource("2_weujr")]
+[node name="ShipPreview" parent="MarginContainer" unique_id=914390148 instance=ExtResource("3_2iw2v")]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 
-[node name="Board" parent="MarginContainer" unique_id=867204651 instance=ExtResource("2_weujr")]
+[node name="ShipPlacement" parent="MarginContainer" unique_id=867204651 instance=ExtResource("3_2iw2v")]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
+
+[node name="ShipBeingDragged" type="Sprite2D" parent="." unique_id=1737826355]
