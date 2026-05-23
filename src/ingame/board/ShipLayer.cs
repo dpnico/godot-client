@@ -252,6 +252,17 @@ public partial class ShipLayer : TileMapLayer
         }
         throw new ArgumentException($"Inconsistent data: A ship is registered at {pos}, but is not mapped to an origin.");
     }
+    
+    public bool TryGetOrigin(Vector2I pos, out Vector2I origin) 
+    {
+        if (_shipTiles.ContainsKey(pos)) 
+        {
+            origin = _shipTiles[pos];
+            return true;
+        }
+        origin = new Vector2I(-1, -1);
+        return false;
+    }
 
     public int GetRotation(Vector2I direction)
     {
