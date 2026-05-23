@@ -1,4 +1,3 @@
-using System;
 using GdUnit4;
 using Godot;
 using GodotClient.Test.Testing;
@@ -16,6 +15,17 @@ public class ShipLayerTests
 
     private readonly PackedScene _shipLayerScene = GD.Load<PackedScene>("res://scenes/ingame/board/ship_layer.tscn");
     private ShipLayer _shipLayer;
+
+    // Tile atlas constants
+    private const int SrcId = 1;
+    private readonly Vector2I _single = new(3, 1);
+    private readonly Vector2I _double = new(0, 2);
+    private readonly Vector2I _triple = new(0, 1);
+    private readonly Vector2I _quad = new(0, 0);
+    // Rotations
+    private const int Rotate90 = (int)(TileSetAtlasSource.TransformTranspose | TileSetAtlasSource.TransformFlipH);
+    private const int Rotate180 = (int)(TileSetAtlasSource.TransformFlipH | TileSetAtlasSource.TransformFlipV);
+    private const int Rotate270 = (int)(TileSetAtlasSource.TransformTranspose | TileSetAtlasSource.TransformFlipV);
 
     public void SetUp()
     {
@@ -51,6 +61,7 @@ public class ShipLayerTests
         AssertThat(state[new Vector2I(2, 6)]).IsEqual(TileOccupation.OCCUPIED);
         AssertThat(state[new Vector2I(0, 5)]).IsEqual(TileOccupation.BLOCKED);
         AssertThat(state[new Vector2I(3, 7)]).IsEqual(TileOccupation.BLOCKED);
+        AssertThat(_shipLayer.GetCellAtlasCoords(pos)).IsEqual(_double);
 
         TearDown();
     }
@@ -80,12 +91,13 @@ public class ShipLayerTests
         AssertThat(state[new Vector2I(2, 6)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(0, 5)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(3, 7)]).IsEqual(TileOccupation.FREE);
+        AssertThat(_shipLayer.GetCellSourceId(pos)).IsEqual(-1);
 
         TearDown();
     }
 
     [TestCase]
-    public void RemoveTileAtOrigin()
+    public void RemoveShipAtOrigin()
     {
         SetUp();
 
@@ -109,12 +121,13 @@ public class ShipLayerTests
         AssertThat(state[new Vector2I(2, 6)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(0, 5)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(3, 7)]).IsEqual(TileOccupation.FREE);
+        AssertThat(_shipLayer.GetCellSourceId(pos)).IsEqual(-1);
 
         TearDown();
     }
 
     [TestCase]
-    public void RemoveTileAtNotAnOrigin()
+    public void RemoveShipAtNotAnOrigin()
     {
         SetUp();
 
@@ -138,6 +151,7 @@ public class ShipLayerTests
         AssertThat(state[new Vector2I(2, 6)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(0, 5)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(3, 7)]).IsEqual(TileOccupation.FREE);
+        AssertThat(_shipLayer.GetCellSourceId(pos)).IsEqual(-1);
 
         TearDown();
     }

@@ -16,7 +16,7 @@ public enum TileOccupation
 }
 
 /// <summary>
-/// The layer of the board that contains the ships.
+/// The layer of the board that contains and visualizes the ships.
 /// </summary>
 public partial class ShipLayer : TileMapLayer
 {
@@ -62,6 +62,14 @@ public partial class ShipLayer : TileMapLayer
     {
         if (@event is InputEventKey keyEvent && keyEvent.Pressed)
         {
+            if (keyEvent.Keycode == Key.I)
+            {
+                InitShips();
+            }
+            if (keyEvent.Keycode == Key.D)
+            {
+                RemoveAllShips();
+            }
             if (keyEvent.Keycode == Key.R)
             {
                 RotateAllShips();
@@ -116,6 +124,7 @@ public partial class ShipLayer : TileMapLayer
 
     public Ship RemoveShipAt(Vector2I pos)
     {
+        GD.Print("RemoveShipAt is called.");
         if (!TryGetShipAt(pos, out Ship ship))
         {
             return null;
@@ -123,7 +132,9 @@ public partial class ShipLayer : TileMapLayer
         var perp = new Vector2I(ship.Direction.Y, ship.Direction.X);
         for (int i = 0; i < ship.Size; i++)
         {
-            _state[ship.Origin + i * ship.Direction] = TileOccupation.FREE;
+            var shipTile = ship.Origin + i * ship.Direction;
+            _state[shipTile] = TileOccupation.FREE;
+            _shipTiles.Remove(shipTile);
         }
         for (int i = -1; i <= ship.Size; i++)
         {
@@ -132,6 +143,8 @@ public partial class ShipLayer : TileMapLayer
                 TryFree(ship.Origin + i * ship.Direction + j * perp);
             }
         }
+        SetCell(ship.Origin, -1);
+        _ships.Remove(ship.ShipId);
         return ship;
     }
 
@@ -184,6 +197,7 @@ public partial class ShipLayer : TileMapLayer
 
     public void TryFree(Vector2I pos)
     {
+        GD.Print("TryFree is called.");
         if (_state.ContainsKey(pos) && !IsBlocked(pos))
         {
             _state[pos] = TileOccupation.FREE;
@@ -192,6 +206,7 @@ public partial class ShipLayer : TileMapLayer
 
     public bool IsBlocked(Vector2I pos)
     {
+        GD.Print("IsBlocked is called.");
         foreach (var n in GetNeighbors(pos))
         {
             if (_state[n] == TileOccupation.OCCUPIED)
@@ -264,11 +279,32 @@ public partial class ShipLayer : TileMapLayer
     }
 
     /// <summary>
-    /// For debugging purposes. Rotates all ships when 'R' is pressed.
+    /// For debugging purposes. Removes all ships.
+    /// </summary>
+    public void RemoveAllShips()
+    {
+        Dictionary<Guid, Ship> shipCopies = new();
+        foreach (var s in _ships)
+        {
+            shipCopies[s.Key] = s.Value;
+        }
+        foreach (var s in shipCopies)
+        {
+            RemoveShipAt(s.Value.Origin);
+        }
+    }
+
+    /// <summary>
+    /// For debugging purposes. Rotates all ships.
     /// </summary>
     public void RotateAllShips()
     {
+        Dictionary<Guid, Ship> shipCopies = new();
         foreach (var s in _ships)
+        {
+            shipCopies[s.Key] = s.Value;
+        }
+        foreach (var s in shipCopies)
         {
             RotateShipAt(s.Value.Origin);
         }
