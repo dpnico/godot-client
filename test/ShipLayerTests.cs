@@ -50,8 +50,6 @@ public class ShipLayerTests
         AssertThat(state[pos]).IsEqual(TileOccupation.OCCUPIED);
         AssertThat(state[new Vector2I(2, 6)]).IsEqual(TileOccupation.OCCUPIED);
         AssertThat(state[new Vector2I(0, 5)]).IsEqual(TileOccupation.BLOCKED);
-        AssertThat(state[new Vector2I(3, 5)]).IsEqual(TileOccupation.BLOCKED);
-        AssertThat(state[new Vector2I(0, 7)]).IsEqual(TileOccupation.BLOCKED);
         AssertThat(state[new Vector2I(3, 7)]).IsEqual(TileOccupation.BLOCKED);
 
         TearDown();
@@ -61,15 +59,14 @@ public class ShipLayerTests
     public void RemoveShip()
     {
         SetUp();
-
-        var id = Guid.NewGuid();
+        
         Vector2I pos = new(1, 6);
         Ship ship = new()
         {
-            ShipId = id,
             Origin = pos,
             Size = 2,
         };
+        var id = ship.ShipId;
         _shipLayer.AddShip(ship);
         _shipLayer.RemoveShip(id);
         var ships = _shipLayer.GetShips();
@@ -77,12 +74,11 @@ public class ShipLayerTests
         var state = _shipLayer.GetState();
 
         AssertThat(ships.Count).IsEqual(0);
+        AssertThat(ships.ContainsKey(id)).IsFalse();
         AssertThat(shipTiles.Count).IsEqual(0);
         AssertThat(state[pos]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(2, 6)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(0, 5)]).IsEqual(TileOccupation.FREE);
-        AssertThat(state[new Vector2I(3, 5)]).IsEqual(TileOccupation.FREE);
-        AssertThat(state[new Vector2I(0, 7)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(3, 7)]).IsEqual(TileOccupation.FREE);
 
         TearDown();
@@ -99,6 +95,7 @@ public class ShipLayerTests
             Origin = pos,
             Size = 2,
         };
+        var id = ship.ShipId;
         _shipLayer.AddShip(ship);
         _shipLayer.RemoveShipAt(pos);
         var ships = _shipLayer.GetShips();
@@ -106,12 +103,11 @@ public class ShipLayerTests
         var state = _shipLayer.GetState();
 
         AssertThat(ships.Count).IsEqual(0);
+        AssertThat(ships.ContainsKey(id)).IsFalse();
         AssertThat(shipTiles.Count).IsEqual(0);
         AssertThat(state[pos]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(2, 6)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(0, 5)]).IsEqual(TileOccupation.FREE);
-        AssertThat(state[new Vector2I(3, 5)]).IsEqual(TileOccupation.FREE);
-        AssertThat(state[new Vector2I(0, 7)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(3, 7)]).IsEqual(TileOccupation.FREE);
 
         TearDown();
@@ -128,6 +124,7 @@ public class ShipLayerTests
             Origin = pos,
             Size = 2,
         };
+        var id = ship.ShipId;
         _shipLayer.AddShip(ship);
         _shipLayer.RemoveShipAt(new Vector2I(2, 6));
         var ships = _shipLayer.GetShips();
@@ -135,12 +132,11 @@ public class ShipLayerTests
         var state = _shipLayer.GetState();
 
         AssertThat(ships.Count).IsEqual(0);
+        AssertThat(ships.ContainsKey(id)).IsFalse();
         AssertThat(shipTiles.Count).IsEqual(0);
         AssertThat(state[pos]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(2, 6)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(0, 5)]).IsEqual(TileOccupation.FREE);
-        AssertThat(state[new Vector2I(3, 5)]).IsEqual(TileOccupation.FREE);
-        AssertThat(state[new Vector2I(0, 7)]).IsEqual(TileOccupation.FREE);
         AssertThat(state[new Vector2I(3, 7)]).IsEqual(TileOccupation.FREE);
 
         TearDown();

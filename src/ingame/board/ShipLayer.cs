@@ -48,6 +48,7 @@ public partial class ShipLayer : TileMapLayer
             for (int y = 0; y < BoardSizeY; y++)
             {
                 _state[new Vector2I(x, y)] = TileOccupation.FREE;
+                GD.Print((_state.ContainsKey(new Vector2I(x, y))).ToString());
             }
         }
     }
