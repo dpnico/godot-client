@@ -63,7 +63,6 @@ public class ShipLayerTests
         AssertThat(state[new Vector2I(0, 5)]).IsEqual(TileOccupation.BLOCKED);
         AssertThat(state[new Vector2I(3, 7)]).IsEqual(TileOccupation.BLOCKED);
         AssertThat(_shipLayer.GetCellAtlasCoords(pos)).IsEqual(_double);
-        AssertThat(_shipLayer.Debug).IsTrue();
 
         TearDown();
     }
@@ -99,7 +98,7 @@ public class ShipLayerTests
     }
 
     [TestCase]
-    public void RemoveShipAtOrigin()
+    public void RemoveShipAt_PositionIsOrigin()
     {
         SetUp();
 
@@ -129,7 +128,7 @@ public class ShipLayerTests
     }
 
     [TestCase]
-    public void RemoveShipAtNotAnOrigin()
+    public void RemoveShipAt_PositionIsNotOrigin()
     {
         SetUp();
 
@@ -158,9 +157,103 @@ public class ShipLayerTests
         TearDown();
     }
 
+    [TestCase]
+    public void Rotate_PositiveRotation()
+    {
+        Ship ship = new()
+        {
+            Origin = new Vector2I(1, 6),
+            Size = 2
+        };
+        ship.Rotate(2);
+
+        AssertThat(ship.Direction).IsEqual(new Vector2I(-1, 0));
+    }
+
+    [TestCase]
+    public void Rotate_NegativeRotation()
+    {
+        Ship ship = new()
+        {
+            Origin = new Vector2I(1, 6),
+            Size = 2
+        };
+        ship.Rotate(-1);
+
+        AssertThat(ship.Direction).IsEqual(new Vector2I(0, -1));
+    }
+
+    [TestCase]
+    public void RotateShipAt_RotationPossible()
+    {
+        SetUp();
+
+        Vector2I pos = new(1, 6);
+        Ship ship = new()
+        {
+            Origin = pos,
+            Size = 2
+        };
+        var id = ship.ShipId;
+        _shipLayer.AddShip(ship);
+        _shipLayer.RotateShipAt(pos);
+        var ships = _shipLayer.GetShips();
+        var shipTiles = _shipLayer.GetShipTiles();
+        var state = _shipLayer.GetState();
+
+        AssertThat(ships.Count).IsEqual(1);
+        AssertThat(ships[id]).IsEqual(ship);
+        AssertThat(shipTiles.Count).IsEqual(2);
+        AssertThat(shipTiles[pos]).IsEqual(pos);
+        AssertThat(shipTiles.ContainsKey(new Vector2I(2, 6))).IsFalse();
+        AssertThat(shipTiles[new Vector2I(1, 7)]).IsEqual(pos);
+        AssertThat(state[pos]).IsEqual(TileOccupation.OCCUPIED);
+        AssertThat(state[new Vector2I(2, 6)]).IsEqual(TileOccupation.BLOCKED);
+        AssertThat(state[new Vector2I(1, 7)]).IsEqual(TileOccupation.OCCUPIED);
+        AssertThat(state[new Vector2I(0, 5)]).IsEqual(TileOccupation.BLOCKED);
+        AssertThat(state[new Vector2I(3, 7)]).IsEqual(TileOccupation.FREE);
+        AssertThat(state[new Vector2I(2, 8)]).IsEqual(TileOccupation.BLOCKED);
+        AssertThat(_shipLayer.GetCellAtlasCoords(pos)).IsEqual(_double);
+        AssertThat(_shipLayer.GetCellAlternativeTile(pos)).IsEqual(Rotate90);
+
+        TearDown();
+    }
+
+    [TestCase]
+    public void RotateShipAt_RotationNotPossible()
+    {
+        SetUp();
+
+        Vector2I pos = new(1, 11);
+        Ship ship = new()
+        {
+            Origin = pos,
+            Size = 2
+        };
+        var id = ship.ShipId;
+        _shipLayer.AddShip(ship);
+        _shipLayer.RotateShipAt(pos);
+        var ships = _shipLayer.GetShips();
+        var shipTiles = _shipLayer.GetShipTiles();
+        var state = _shipLayer.GetState();
+
+        AssertThat(ships.Count).IsEqual(1);
+        AssertThat(ships[id]).IsEqual(ship);
+        AssertThat(shipTiles.Count).IsEqual(2);
+        AssertThat(shipTiles[pos]).IsEqual(pos);
+        AssertThat(shipTiles[new Vector2I(2, 11)]).IsEqual(pos);
+        AssertThat(shipTiles.ContainsKey(new Vector2I(1, 12))).IsFalse();
+        AssertThat(state[pos]).IsEqual(TileOccupation.OCCUPIED);
+        AssertThat(state[new Vector2I(2, 11)]).IsEqual(TileOccupation.OCCUPIED);
+        AssertThat(state[new Vector2I(3, 10)]).IsEqual(TileOccupation.BLOCKED);
+        AssertThat(_shipLayer.GetCellAtlasCoords(pos)).IsEqual(_double);
+        AssertThat(_shipLayer.GetCellAlternativeTile(pos)).IsEqual(0);
+
+        TearDown();
+    }
+
     public void TearDown()
     {
         _runner.Dispose();
-        //_scene.Dispose();
     }
 }
