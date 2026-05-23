@@ -13,10 +13,10 @@ public partial class Board : Control
     [Export] private TileMapLayer _grid;
     [Export] private TileMapLayer _shipLayer;
     [Export] private TileMapLayer _markerLayer;
-    
+
     private readonly Color _opacity30 = Color.FromHtml("#ffffff4d");
     private readonly Color _opacity65 = Color.FromHtml("#ffffffa6");
-    
+
     // Tile atlas constants
     private const int ShipsSrcId = 1;
     // Board dimensions
@@ -26,6 +26,9 @@ public partial class Board : Control
     private readonly Dictionary<Guid, Ship> _ships = new();
     private readonly Dictionary<Vector2I, Vector2I> _shipTiles = new();
     private readonly Dictionary<Vector2I, TileOccupation> _shipLayerState = new();
+
+    public event Action RandomPressed;
+    public event Action ReadyPressed;
 
     /// <summary>
     /// Called when the node enters the scene tree for the first time.
@@ -49,7 +52,7 @@ public partial class Board : Control
     public override void _Process(double delta)
     {
     }
-    
+
     /// <summary>
     /// Called when there is an input event. The input event propagates up
     /// through the node tree until a node consumes it.
@@ -69,7 +72,7 @@ public partial class Board : Control
             }
         }
     }
-    
+
     /// <summary>
     /// Initializes the ship layer with a starter configuration of ships.
     /// </summary>
@@ -81,7 +84,7 @@ public partial class Board : Control
             AddShip(s);
         }
     }
-    
+
     public void AddShip(Ship ship)
     {
         if (_ships.ContainsKey(ship.ShipId))
@@ -102,11 +105,11 @@ public partial class Board : Control
             _shipLayerState[pos] = TileOccupation.OCCUPIED;
             _shipTiles[pos] = ship.Origin;
         }
-        _shipLayer.SetCell(ship.Origin, ShipsSrcId, BoardUtil.GetAtlasCoords(ship.Size), 
+        _shipLayer.SetCell(ship.Origin, ShipsSrcId, BoardUtil.GetAtlasCoords(ship.Size),
             BoardUtil.GetRotation(ship.Direction));
         _ships[ship.ShipId] = ship;
     }
-    
+
     public Ship RemoveShip(Guid shipId)
     {
         if (!_ships.ContainsKey(shipId))
@@ -115,7 +118,7 @@ public partial class Board : Control
         }
         return RemoveShipAt(_ships[shipId].Origin);
     }
-    
+
     public Ship RemoveShipAt(Vector2I pos)
     {
         if (!TryGetShipAt(pos, out Ship ship))
@@ -144,7 +147,7 @@ public partial class Board : Control
         _ships.Remove(ship.ShipId);
         return ship;
     }
-    
+
     public void RotateShipAt(Vector2I pos)
     {
         var ship = RemoveShipAt(pos);
@@ -163,7 +166,7 @@ public partial class Board : Control
             AddShip(ship);
         }
     }
-    
+
     public bool CanPlaceShip(Ship ship)
     {
         if (!FitsOnBoard(ship))
@@ -179,7 +182,7 @@ public partial class Board : Control
         }
         return true;
     }
-    
+
     public bool FitsOnBoard(Ship ship)
     {
         switch (ship.Direction)
@@ -191,7 +194,7 @@ public partial class Board : Control
             default: throw new ArgumentException($"Invalid direction: {ship.Size}.");
         }
     }
-    
+
     public bool IsBlocked(Vector2I pos)
     {
         foreach (var n in BoardUtil.GetNeighbors(pos))
@@ -203,7 +206,7 @@ public partial class Board : Control
         }
         return false;
     }
-    
+
     public bool TryGetShipAt(Vector2I pos, out Ship ship)
     {
         if (!_shipTiles.ContainsKey(pos))
@@ -221,7 +224,7 @@ public partial class Board : Control
         }
         throw new ArgumentException($"Inconsistent data: A ship is registered at {pos}, but is not mapped to an origin.");
     }
-    
+
     /// <summary>
     /// For debugging purposes. Removes all ships.
     /// </summary>
@@ -237,7 +240,7 @@ public partial class Board : Control
             RemoveShipAt(s.Value.Origin);
         }
     }
-    
+
     /// <summary>
     /// For debugging purposes. Rotates all ships.
     /// </summary>
@@ -253,7 +256,7 @@ public partial class Board : Control
             RotateShipAt(s.Value.Origin);
         }
     }
-    
+
     public void SetTransparent()
     {
         _grid.SetModulate(_opacity30);
@@ -271,22 +274,22 @@ public partial class Board : Control
     {
         return _grid.LocalToMap(_grid.ToLocal(pos));
     }
-    
+
     public TileMapLayer GetGrid()
     {
         return _grid;
     }
-    
+
     public TileMapLayer GetShipLayer()
     {
         return _shipLayer;
     }
-    
-    public TileMapLayer GetMarkerLayer() 
+
+    public TileMapLayer GetMarkerLayer()
     {
         return _markerLayer;
     }
-    
+
     /// <summary>
     /// Returns the dictionary of ships.
     /// </summary>
@@ -295,7 +298,7 @@ public partial class Board : Control
     {
         return _ships;
     }
-    
+
     /// <summary>
     /// Returns the dictionary of ship tiles.
     /// </summary>
@@ -304,7 +307,7 @@ public partial class Board : Control
     {
         return _shipTiles;
     }
-    
+
     /// <summary>
     /// Returns the dictionary of board tile states.
     /// </summary>

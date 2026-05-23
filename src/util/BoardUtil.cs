@@ -18,12 +18,12 @@ public static class BoardUtil
     // Board dimensions
     private const int BoardSizeX = 12;
     private const int BoardSizeY = 12;
-    
+
     public static bool IsWithinBounds(Vector2I pos)
     {
         return pos.X >= 0 && pos.X < BoardSizeX && pos.Y >= 0 & pos.Y < BoardSizeY;
     }
-    
+
     public static List<Vector2I> GetNeighbors(Vector2I pos)
     {
         var neighbors = new List<Vector2I>();
@@ -47,7 +47,7 @@ public static class BoardUtil
     {
         return pos - origin;
     }
-    
+
     public static int GetRotation(Vector2I direction)
     {
         switch (direction)
@@ -59,7 +59,7 @@ public static class BoardUtil
             default: throw new ArgumentException($"{direction} is not a valid direction.");
         }
     }
-    
+
     public static Vector2I GetAtlasCoords(int shipSize)
     {
         switch (shipSize)
