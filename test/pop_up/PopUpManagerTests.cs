@@ -20,7 +20,7 @@ public class PopUpManagerTests
     {
         _runner = ISceneRunner.Load("res://scenes/test/test.tscn");
         _scene = _runner.Scene() as TestScene;
-
+        
         _manager.SetRoot(_scene);
     }
 
@@ -60,7 +60,7 @@ public class PopUpManagerTests
 
     [TestCase]
     [ThrowsException(typeof(InvalidOperationException), "Can't remove a pop-up from an empty stack.")]
-    public void RemovePopUpFromEmptyStack()
+    public void RemovePopUp_EmptyStack()
     {
         SetUp();
 
@@ -86,6 +86,6 @@ public class PopUpManagerTests
     public void TearDown()
     {
         _runner.Dispose();
-        _manager.SetRoot(null);
+        _manager.ClearStack();
     }
 }
