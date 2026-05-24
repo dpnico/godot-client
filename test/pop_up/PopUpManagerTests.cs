@@ -14,14 +14,13 @@ public class PopUpManagerTests
     private ISceneRunner _runner;
     private TestScene _scene;
 
-    private PopUpManager _manager;
+    private readonly PopUpManager _manager = PopUpManager.Instance;
 
     public void SetUp()
     {
         _runner = ISceneRunner.Load("res://scenes/test/test.tscn");
         _scene = _runner.Scene() as TestScene;
 
-        _manager = PopUpManager.Instance;
         _manager.SetRoot(_scene);
     }
 
@@ -87,5 +86,6 @@ public class PopUpManagerTests
     public void TearDown()
     {
         _runner.Dispose();
+        _scene.Dispose();
     }
 }
