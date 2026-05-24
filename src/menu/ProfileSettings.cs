@@ -11,7 +11,7 @@ public partial class ProfileSettings : PanelContainer
     [Export] private Label _username;
     [Export] private LineEdit _usernameEdit;
     [Export] private Button _usernameEditButton;
-    
+
     private bool _editingUsername = false;
 
     /// <summary>
@@ -34,7 +34,7 @@ public partial class ProfileSettings : PanelContainer
 
     public override void _Input(InputEvent @event)
     {
-        if (@event is InputEventMouseButton mb && mb.Pressed) 
+        if (@event is InputEventMouseButton mb && mb.Pressed)
         {
             var pos = GetGlobalMousePosition();
             var hoveredControl = GetViewport().GuiGetHoveredControl();
@@ -80,8 +80,8 @@ public partial class ProfileSettings : PanelContainer
             }
         }
     }
-    
-    public void TerminateEditingUsername() 
+
+    public void TerminateEditingUsername()
     {
         ActivateControl(_usernameEdit, false);
         _usernameEdit.Text = "";

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cdkau2cdr6a4m"]
 
-[ext_resource type="Script" uid="uid://b08cc5itbfte4" path="res://src/main_menu/MainMenu.cs" id="1_0ebjn"]
+[ext_resource type="Script" uid="uid://b08cc5itbfte4" path="res://src/menu/MainMenu.cs" id="1_0ebjn"]
 [ext_resource type="Texture2D" uid="uid://dg7g5xear8tqk" path="res://resources/textures/background/water.png" id="1_fsom3"]
 
 [node name="MainMenu" type="Control" unique_id=97080307 node_paths=PackedStringArray("_startButton", "_settingsButton", "_helpButton", "_exitButton")]
@@ -65,6 +65,13 @@ text = "Start"
 [node name="SettingsButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=1344069737]
 custom_minimum_size = Vector2(655, 106)
 layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 30
+text = "Settings"
+
+[node name="SettingsButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/SettingsButton" unique_id=46925131]
+custom_minimum_size = Vector2(655, 106)
+layout_mode = 0
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 30
 text = "Settings"
