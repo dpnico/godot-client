@@ -7,78 +7,78 @@ namespace GodotClient.Menu;
 
 public partial class ProfileSettings : PanelContainer
 {
-	[Export] private TextureRect _profileIcon;
-	[Export] private Label _username;
-	[Export] private LineEdit _usernameEdit;
-	[Export] private Button _usernameEditButton;
-	
-	private bool _editingUsername = false;
-	
-	/// <summary>
-	/// Called when the node enters the scene tree for the first time.
-	/// </summary>
-	public override void _Ready()
-	{
-		ActivateControl(_usernameEdit, false);
-		
-		_usernameEditButton.Pressed += OnUsernameEditButtonPressed;
-	}
+    [Export] private TextureRect _profileIcon;
+    [Export] private Label _username;
+    [Export] private LineEdit _usernameEdit;
+    [Export] private Button _usernameEditButton;
 
-	/// <summary>
-	/// Called every frame. 'delta' is the elapsed time since the previous frame.
-	/// </summary>
-	/// <param name="delta"></param>
-	public override void _Process(double delta)
-	{
-	}
-	
-	public override void _Input(InputEvent @event) 
-	{
-		
-	}
+    private bool _editingUsername = false;
 
-	public void OnUsernameEditButtonPressed()
-	{
-		if (_editingUsername) 
-		{
-			TrySaveUsername();
-			ActivateControl(_usernameEdit, false);
-			_usernameEditButton.Text = "Edit";
-			_editingUsername = false;
-		}
-		else
-		{
-			_editingUsername = true;
-			ActivateControl(_usernameEdit, true);
-			_usernameEdit.GrabFocus();
-			_usernameEditButton.Text = "Save";
-		}
-	}
+    /// <summary>
+    /// Called when the node enters the scene tree for the first time.
+    /// </summary>
+    public override void _Ready()
+    {
+        ActivateControl(_usernameEdit, false);
 
-	public void TrySaveUsername()
-	{
-		var newName = _usernameEdit.Text.Trim();
-		if (newName.Length > 0)
-		{
-			if (newName.Length <= 16) 
-			{
-				_username.Text = newName;
-			}
-			else
-			{
-				PopUpManager.Instance.ShowPopUp(PopUpType.USERNAME_TOO_LONG);
-			}
-		}
-		_usernameEdit.Text = "";
-		_usernameEdit.PlaceholderText = _username.Text;
-	}
+        _usernameEditButton.Pressed += OnUsernameEditButtonPressed;
+    }
 
-	public void ActivateControl(Control ctrl, bool active)
-	{
-		ctrl.SetVisible(active);
-		var processMode = active ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
-		ctrl.SetProcessMode(processMode);
-		var filter = active ? MouseFilterEnum.Stop : MouseFilterEnum.Ignore;
-		ctrl.SetMouseFilter(filter);
-	}
+    /// <summary>
+    /// Called every frame. 'delta' is the elapsed time since the previous frame.
+    /// </summary>
+    /// <param name="delta"></param>
+    public override void _Process(double delta)
+    {
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+
+    }
+
+    public void OnUsernameEditButtonPressed()
+    {
+        if (_editingUsername)
+        {
+            TrySaveUsername();
+            ActivateControl(_usernameEdit, false);
+            _usernameEditButton.Text = "Edit";
+            _editingUsername = false;
+        }
+        else
+        {
+            _editingUsername = true;
+            ActivateControl(_usernameEdit, true);
+            _usernameEdit.GrabFocus();
+            _usernameEditButton.Text = "Save";
+        }
+    }
+
+    public void TrySaveUsername()
+    {
+        var newName = _usernameEdit.Text.Trim();
+        if (newName.Length > 0)
+        {
+            if (newName.Length <= 16)
+            {
+                _username.Text = newName;
+            }
+            else
+            {
+                PopUpManager.Instance.ShowPopUp(PopUpType.USERNAME_TOO_LONG);
+            }
+        }
+        _usernameEdit.Text = "";
+        _usernameEdit.PlaceholderText = _username.Text;
+    }
+
+    public void ActivateControl(Control ctrl, bool active)
+    {
+        ctrl.SetVisible(active);
+        var processMode = active ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
+        ctrl.SetProcessMode(processMode);
+        var filter = active ? MouseFilterEnum.Stop : MouseFilterEnum.Ignore;
+        ctrl.SetMouseFilter(filter);
+    }
 }
