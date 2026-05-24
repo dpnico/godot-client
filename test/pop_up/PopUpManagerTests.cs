@@ -20,7 +20,7 @@ public class PopUpManagerTests
     {
         _runner = ISceneRunner.Load("res://scenes/test/test.tscn");
         _scene = _runner.Scene() as TestScene;
-        
+
         _manager.SetRoot(_scene);
     }
 
