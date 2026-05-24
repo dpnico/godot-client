@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://br0ikgaw06yl2"]
+
+[ext_resource type="Script" uid="uid://w5sw6c5ct11" path="res://src/menu/ProfileSettings.cs" id="1_o5f2x"]
+[ext_resource type="Texture2D" uid="uid://ceruy46g84dl0" path="res://icon.svg" id="2_4b2la"]
+
+[node name="ProfileSettings" type="PanelContainer" unique_id=1256545712 node_paths=PackedStringArray("_profileIcon", "_username", "_usernameEdit", "_usernameEditButton")]
+custom_minimum_size = Vector2(716, 0)
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 658.0
+grow_vertical = 2
+size_flags_horizontal = 0
+script = ExtResource("1_o5f2x")
+_profileIcon = NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect")
+_username = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Username")
+_usernameEdit = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Username/UsernameEdit")
+_usernameEditButton = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Button")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1545533172]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=687428360]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1006606810]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 30
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1594663431]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("2_4b2la")
+
+[node name="Username" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1866294066]
+custom_minimum_size = Vector2(355, 65)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 35
+text = "Player"
+vertical_alignment = 1
+
+[node name="UsernameEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer/Username" unique_id=705028177]
+custom_minimum_size = Vector2(300, 65)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 35
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=310517934]
+custom_minimum_size = Vector2(106, 65)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+text = "Edit"

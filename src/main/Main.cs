@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using GodotClient.PopUps;
 
 /// <summary>
 /// The main class and entry point of the program.
@@ -11,7 +12,7 @@ public partial class Main : Node
     /// </summary>
     public override void _Ready()
     {
-
+        PopUpManager.Instance.SetRoot(this);
     }
 
     /// <summary>

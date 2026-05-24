@@ -9,14 +9,22 @@ namespace GodotClient.PopUps;
 /// </summary>
 public class PopUpManager
 {
-    private readonly Node _root;
+    public static PopUpManager Instance = new PopUpManager();
+    private Node _root;
     private readonly Stack<PopUp> _popUpStack = new();
 
-    public event Action<PopUpType> PopUpRemoved;
+    public event Action<PopUpType, int> PopUpRemoved;
 
-    public PopUpManager(Node root)
+    private PopUpManager()
     {
-        _root = root;
+    }
+
+    public void SetRoot(Node root)
+    {
+        if (!GodotObject.IsInstanceValid(_root))
+        {
+            _root = root;
+        }
     }
 
     /// <summary>
@@ -29,6 +37,7 @@ public class PopUpManager
         if (PopUpMap.Scene.TryGetValue(type, out var scene))
         {
             popUp = scene.Instantiate<PopUp>();
+            popUp.ButtonPressed += RemovePopUp;
         }
         else
         {
@@ -57,7 +66,7 @@ public class PopUpManager
     /// <summary>
     /// Removes the pop-up at the top of the stack.
     /// </summary>
-    public void RemovePopUp()
+    public void RemovePopUp(int buttonIndex = -1)
     {
         if (_popUpStack.Count == 0)
         {
@@ -65,7 +74,7 @@ public class PopUpManager
         }
         var popUp = _popUpStack.Pop();
         ShowMostRecent(true);
-        PopUpRemoved?.Invoke(popUp.GetPopUpType());
+        PopUpRemoved?.Invoke(popUp.GetPopUpType(), buttonIndex);
         _root.RemoveChild(popUp);
         popUp.QueueFree();
     }

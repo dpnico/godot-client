@@ -11,16 +11,18 @@ namespace GodotClient.Test.PopUps;
 [RequireGodotRuntime]
 public class PopUpManagerTests
 {
-    private readonly PackedScene _testScene = GD.Load<PackedScene>("res://scenes/test/test.tscn");
+    private ISceneRunner _runner;
     private TestScene _scene;
 
     private PopUpManager _manager;
 
     public void SetUp()
     {
-        _scene = _testScene.Instantiate<TestScene>();
+        _runner = ISceneRunner.Load("res://scenes/test/test.tscn");
+        _scene = _runner.Scene() as TestScene;
 
-        _manager = new PopUpManager(_scene);
+        _manager = PopUpManager.Instance;
+        _manager.SetRoot(_scene);
     }
 
     [TestCase]
@@ -84,7 +86,6 @@ public class PopUpManagerTests
 
     public void TearDown()
     {
-        _scene.Dispose();
-        _manager = null;
+        _runner.Dispose();
     }
 }
