@@ -11,16 +11,17 @@ namespace GodotClient.Test.PopUps;
 [RequireGodotRuntime]
 public class PopUpManagerTests
 {
-    private readonly PackedScene _testScene = GD.Load<PackedScene>("res://scenes/test/test.tscn");
+    private ISceneRunner _runner;
     private TestScene _scene;
 
-    private PopUpManager _manager;
+    private readonly PopUpManager _manager = PopUpManager.Instance;
 
     public void SetUp()
     {
-        _scene = _testScene.Instantiate<TestScene>();
+        _runner = ISceneRunner.Load("res://scenes/test/test.tscn");
+        _scene = _runner.Scene() as TestScene;
 
-        _manager = new PopUpManager(_scene);
+        _manager.SetRoot(_scene);
     }
 
     [TestCase]
@@ -59,7 +60,7 @@ public class PopUpManagerTests
 
     [TestCase]
     [ThrowsException(typeof(InvalidOperationException), "Can't remove a pop-up from an empty stack.")]
-    public void RemovePopUpFromEmptyStack()
+    public void RemovePopUp_EmptyStack()
     {
         SetUp();
 
@@ -84,7 +85,7 @@ public class PopUpManagerTests
 
     public void TearDown()
     {
-        _scene.Dispose();
-        _manager = null;
+        _runner.Dispose();
+        _manager.ClearStack();
     }
 }
