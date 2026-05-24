@@ -86,6 +86,6 @@ public class PopUpManagerTests
     public void TearDown()
     {
         _runner.Dispose();
-        _scene.Dispose();
+        _manager.SetRoot(null);
     }
 }

@@ -21,10 +21,7 @@ public class PopUpManager
 
     public void SetRoot(Node root)
     {
-        if (!GodotObject.IsInstanceValid(_root))
-        {
-            _root = root;
-        }
+        _root = root;
     }
 
     /// <summary>
