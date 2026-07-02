@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://drn7xg3xbc7nw"]
 
 [ext_resource type="Script" uid="uid://cwgaytpdpvy8k" path="res://src/ingame/PlacementScreen.cs" id="1_7jvvm"]
-[ext_resource type="Texture2D" uid="uid://devpmua0bmaft" path="res://resources/textures/background/hexagons_dark.png" id="2_7jvvm"]
+[ext_resource type="Texture2D" uid="uid://dg7g5xear8tqk" path="res://resources/textures/background/water.png" id="2_7jvvm"]
 [ext_resource type="PackedScene" uid="uid://oraasfdeyboc" path="res://scenes/ingame/board/board.tscn" id="3_2iw2v"]
 
 [node name="Placement" type="Control" unique_id=742025217 node_paths=PackedStringArray("_randomButton", "_readyButton", "_shipPreview", "_shipPlacement", "_dragAndDropPreview")]
