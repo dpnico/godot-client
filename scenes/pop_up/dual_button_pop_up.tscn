@@ -77,14 +77,14 @@ size_flags_vertical = 4
 theme_override_constants/separation = 65
 
 [node name="Button" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2056841007]
-custom_minimum_size = Vector2(435, 116)
+custom_minimum_size = Vector2(435, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 35
 text = "Text"
 
 [node name="Button2" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=135834980]
-custom_minimum_size = Vector2(435, 116)
+custom_minimum_size = Vector2(435, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 35

@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://cokcrfcfxr1fv"]
+
+[ext_resource type="Texture2D" uid="uid://dg7g5xear8tqk" path="res://resources/textures/background/water.png" id="1_1uif8"]
+[ext_resource type="Texture2D" uid="uid://ceruy46g84dl0" path="res://icon.svg" id="2_hguh2"]
+
+[node name="Settings" type="Control" unique_id=913593060]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=733063212]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_1uif8")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1163256165]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 35
+theme_override_constants/margin_top = 35
+theme_override_constants/margin_right = 35
+theme_override_constants/margin_bottom = 35
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer" unique_id=681627005]
+custom_minimum_size = Vector2(550, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer" unique_id=1639676428]
+layout_mode = 2
+theme_override_constants/margin_left = 35
+theme_override_constants/margin_top = 35
+theme_override_constants/margin_right = 35
+theme_override_constants/margin_bottom = 35
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer" unique_id=452137232]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=790003582]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 30
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1002100439]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("2_hguh2")
+
+[node name="Username" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=764235148]
+custom_minimum_size = Vector2(300, 65)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 35
+text = "Player"
+vertical_alignment = 1
+
+[node name="usernameEdit" type="LineEdit" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Username" unique_id=1048696683]
+visible = false
+custom_minimum_size = Vector2(300, 65)
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 65.0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 35
+text = "Player"
+editable = false
+
+[node name="Button" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=87262305]
+custom_minimum_size = Vector2(106, 65)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+text = "Edit"

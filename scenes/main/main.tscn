@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://wp4t0ta7ytq2"]
 
 [ext_resource type="Script" uid="uid://dgnm58kqmwyus" path="res://src/main/Main.cs" id="1_hyk8p"]
+[ext_resource type="PackedScene" uid="uid://br0ikgaw06yl2" path="res://scenes/menu/profile_settings.tscn" id="2_iuonh"]
 
 [node name="Main" type="Node" unique_id=1638774981]
 script = ExtResource("1_hyk8p")
+
+[node name="ProfileSettings" parent="." unique_id=1256545712 instance=ExtResource("2_iuonh")]

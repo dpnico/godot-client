@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://drtf007gbo5sg"]
+
+[node name="UI" type="Control" unique_id=124549713]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="." unique_id=86915875]
+layout_mode = 0
+offset_left = 1040.0
+offset_top = 250.0
+offset_right = 1293.0
+offset_bottom = 336.0
+disabled = true
+text = "Some Text"
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=437554824]
+layout_mode = 0
+offset_left = 262.0
+offset_top = 209.0
+offset_right = 697.0
+offset_bottom = 477.0
+
+[node name="CheckButton" type="CheckButton" parent="." unique_id=1367804946]
+layout_mode = 0
+offset_left = 757.0
+offset_top = 92.0
+offset_right = 1062.0
+offset_bottom = 209.0
+text = "check button"
+
+[node name="TextEdit" type="TextEdit" parent="." unique_id=1258877520]
+layout_mode = 0
+offset_left = 1006.0
+offset_top = 348.0
+offset_right = 1546.0
+offset_bottom = 701.0
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=113461918]
+layout_mode = 0
+offset_left = 1331.0
+offset_top = 84.0
+offset_right = 1633.0
+offset_bottom = 175.0
+value = 50.0

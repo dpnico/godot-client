@@ -18,7 +18,8 @@ public record PopUpConfig
 /// </summary>
 public enum PopUpType
 {
-    EXIT_GAME
+    EXIT_GAME,
+    USERNAME_TOO_LONG
 }
 
 /// <summary>
@@ -34,7 +35,8 @@ public static class PopUpMap
     public static readonly IReadOnlyDictionary<PopUpType, PackedScene> Scene =
         new Dictionary<PopUpType, PackedScene>()
         {
-            { PopUpType.EXIT_GAME, DualButtonPopUp }
+            { PopUpType.EXIT_GAME, DualButtonPopUp },
+            { PopUpType.USERNAME_TOO_LONG, SingleButtonPopUp },
         };
 
     public static readonly IReadOnlyDictionary<PopUpType, PopUpConfig> Config =
@@ -46,6 +48,14 @@ public static class PopUpMap
                     Header = "Exit Game",
                     Content = "Are you sure you want to exit the game?",
                     ButtonText = new List<string>() { "Cancel", "Exit" }
+                }
+            },
+            {
+                PopUpType.USERNAME_TOO_LONG, new PopUpConfig()
+                {
+                    Header = "Username Too Long",
+                    Content = "The entered username was too long. Your username cannot be longer than 16 characters.",
+                    ButtonText = new List<string>() { "OK" }
                 }
             }
         };
