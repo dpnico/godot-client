@@ -45,21 +45,11 @@ jobs:
           paths: 'res://test'
           godot-net: true
           report-name: 'coverage.xml'
-          arguments: -coverage -coverage-path ./coverage/
-          
-      - name: Make Coverage Directory
-        run: mkdir -p coverage
-        
-      - name: Download Coverage Report
-        uses: actions/download-artifact@v8
-        with:
-          name: coverage.xml
-          path: ./coverage/
-      
+
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
-          filename: ./coverage/coverage.xml'
+          filename: ./reports/**/coverage.cobertura.xml
           badge: true
           fail_below_min: true
           format: markdown
