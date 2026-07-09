@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="Code Coverage" uri="datacollector://Microsoft/CodeCoverage/2.0" assemblyQualifiedName="Microsoft.VisualStudio.Coverage.DynamicCoverageDataCollector, Microsoft.VisualStudio.TraceCollector, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+        <Configuration>
+          <CodeCoverage>
+            <Sources>
+              <Exclude>
+                <Source>.*\/[Aa]ddons\/.*</Source>
+                <Source>.*\.generated\.cs</Source>
+                <Source>.*\.godot/.*</Source>
+                <Source>.*\.godot\\.*</Source>
+              </Exclude>
+            </Sources>
+            <ModulePaths>
+              <Exclude>
+                <ModulePath>.*GodotSharp.*</ModulePath>
+                <ModulePath>.*GodotPlugins.*</ModulePath>
+              </Exclude>
+            </ModulePaths>
+          </CodeCoverage>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>
