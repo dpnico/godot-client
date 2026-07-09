@@ -34,22 +34,49 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      GODOT_VERSION: '4.6.2'
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
-      - name: Test
-        uses: godot-gdunit-labs/gdUnit4-action@v1
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
         with:
-          godot-version: '4.6.2'
-          paths: 'res://test'
-          godot-net: true
-          report-name: 'coverage.xml'
+          dotnet-version: '8.0.x'
+
+      - name: Install Godot Mono
+        run: |
+          ZIP="Godot_v${GODOT_VERSION}-stable_mono_linux_x86_64"
+          wget -q "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/${ZIP}.zip"
+          unzip -q "${ZIP}.zip"
+          echo "GODOT_BIN=$PWD/${ZIP}/${ZIP%_x86_64}.x86_64" >> "$GITHUB_ENV"
+
+      - name: Install dotnet-coverage
+        run: |
+          dotnet tool install --global dotnet-coverage --version 18.5.2
+          echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+
+      - name: Build
+        run: dotnet build godot-client.sln
+
+      - name: Import project cache
+        run: xvfb-run --auto-servernum "$GODOT_BIN" --headless --path . --import --quit-after 2000 || true
+
+      - name: Test with coverage
+        run: |
+          mkdir -p coverage
+          xvfb-run --auto-servernum dotnet-coverage collect \
+            -s .runsettings \
+            -f cobertura -o coverage/coverage.xml \
+            -if './.godot/mono/temp/bin/Debug/godot-client.dll' \
+            "dotnet test --no-build --settings test.runsettings"
 
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
-          filename: ./reports/**/coverage.cobertura.xml
+          filename: coverage/coverage.xml
           badge: true
           fail_below_min: true
           format: markdown

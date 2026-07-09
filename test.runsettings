@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+    <RunConfiguration>
+        <MaxCpuCount>1</MaxCpuCount>
+        <ResultsDirectory>./TestResults</ResultsDirectory>
+        <TargetFrameworks>net8.0</TargetFrameworks>
+        <TestSessionTimeout>180000</TestSessionTimeout>
+        <TreatNoTestsAsError>true</TreatNoTestsAsError>
+    </RunConfiguration>
+
+    <GdUnit4>
+        <!-- Godot runtime parameters for headless CI (under xvfb) -->
+        <Parameters>--audio-driver Dummy --display-driver x11 --rendering-driver opengl3 --screen 0</Parameters>
+        <DisplayName>FullyQualifiedName</DisplayName>
+    </GdUnit4>
+</RunSettings>
